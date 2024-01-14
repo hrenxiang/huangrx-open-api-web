@@ -136,8 +136,8 @@ export default defineConfig({
     },
     {
       requestLibPath: "import { request } from '@umijs/max'",
-      schemaPath: 'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
-      projectName: 'swagger',
+      schemaPath: 'http://172.31.208.1:19098/open-api/v3/api-docs',
+      projectName: 'open-api',
     },
   ],
   mfsu: {
