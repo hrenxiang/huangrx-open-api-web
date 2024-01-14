@@ -21,3 +21,14 @@ export async function register(body: API.AddUserDTO, options?: { [key: string]: 
     ...(options || {}),
   });
 }
+
+export async function login(body: API.LoginDTO, options?: { [key: string]: any }) {
+  return request<API.TokenDTO>('/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

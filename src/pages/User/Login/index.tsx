@@ -1,5 +1,5 @@
 import Footer from '@/components/Footer';
-import { login } from '@/services/ant-design-pro/api';
+import { login } from '@/services/open-api/LoginController';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import {
   AlipayCircleOutlined,
@@ -58,8 +58,9 @@ const LoginMessage: React.FC<{
   );
 };
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
-  const [type, setType] = useState<string>('account');
+  // const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [userLoginState] = useState<API.LoginResult>({});
+  const [loginType, setLoginType] = useState<string>('normal');
   const { initialState, setInitialState } = useModel('@@initialState');
   const containerClassName = useEmotionCss(() => {
     return {
@@ -83,14 +84,14 @@ const Login: React.FC = () => {
       });
     }
   };
-  const handleSubmit = async (values: API.LoginParams) => {
+  const handleSubmit = async (values: API.LoginDTO) => {
     try {
       // 登录
       const msg = await login({
         ...values,
-        type,
+        loginType,
       });
-      if (msg.status === 'ok') {
+      if (msg.accessToken) {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
@@ -100,14 +101,14 @@ const Login: React.FC = () => {
       }
       console.log(msg);
       // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      // setUserLoginState(msg);
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
       console.log(error);
       message.error(defaultLoginFailureMessage);
     }
   };
-  const { status, type: loginType } = userLoginState;
+  const { status, type: type } = userLoginState;
   return (
     <div className={containerClassName}>
       <Helmet>
@@ -135,12 +136,12 @@ const Login: React.FC = () => {
           }}
           actions={['其他登录方式 :', <ActionIcons key="icons" />]}
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            await handleSubmit(values as API.LoginDTO);
           }}
         >
           <Tabs
-            activeKey={type}
-            onChange={setType}
+            activeKey={loginType}
+            onChange={setLoginType}
             centered
             items={[
               {
@@ -154,10 +155,10 @@ const Login: React.FC = () => {
             ]}
           />
 
-          {status === 'error' && loginType === 'account' && (
+          {status === 'error' && type === 'normal' && (
             <LoginMessage content={'错误的用户名和密码(admin/ant.design)'} />
           )}
-          {type === 'account' && (
+          {loginType === 'normal' && (
             <>
               <ProFormText
                 name="username"
@@ -190,8 +191,8 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
-          {type === 'mobile' && (
+          {status === 'error' && type === 'mobile' && <LoginMessage content="验证码错误" />}
+          {loginType === 'mobile' && (
             <>
               <ProFormText
                 fieldProps={{

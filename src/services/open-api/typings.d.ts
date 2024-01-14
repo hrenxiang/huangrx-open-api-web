@@ -26,6 +26,17 @@ declare namespace API {
     remark?: string;
   };
 
+  type LoginDTO = {
+    /** 用户名 */
+    username: string;
+    /** 密码 */
+    password: string;
+    /** 登录类型 */
+    loginType: string;
+    /** 刷新Token */
+    refreshToken: string;
+  };
+
   type ApiInfoDTO = {
     /** API端点名称 */
     name: string;
@@ -181,5 +192,11 @@ declare namespace API {
 
   type selectApiInfoParams = {
     id: string;
+  };
+
+  type TokenDTO = {
+    accessToken?: string;
+    refreshToken?: string;
+    expire?: string;
   };
 }
