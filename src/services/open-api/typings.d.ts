@@ -14,12 +14,8 @@ declare namespace API {
     avatar: string;
     /** 用户密码 */
     password: string;
-    /** 职位ID */
-    postId: string;
     /** 角色ID */
     roleId: string;
-    /** 部门ID */
-    deptId: string;
     /** 状态 */
     status: number;
     /** 备注 */
@@ -198,5 +194,59 @@ declare namespace API {
     accessToken?: string;
     refreshToken?: string;
     expire?: string;
+  };
+
+  type UserVO = {
+    /** 用户ID */
+    userId?: number;
+    /** 角色ID */
+    roleId?: number;
+    /** 角色名称 */
+    roleName?: string;
+    /** 用户名 */
+    username?: string;
+    /** 用户昵称 */
+    nickname?: string;
+    /** 用户类型 */
+    userType?: number;
+    /** 邮件 */
+    email?: string;
+    /** 号码 */
+    phoneNumber?: string;
+    /** 性别 */
+    sex?: number;
+    /** 用户头像 */
+    avatar?: string;
+    /** 状态 */
+    status?: number;
+    /** 备注 */
+    remark?: string;
+    /** 登录IP */
+    loginIp?: string;
+    /** 登录日期 */
+    loginDate?: string;
+  };
+
+  type LoginUserVO = {
+    userInfo?: UserVO;
+    roleKey?: string;
+    permissions?: string[];
+  };
+
+  type LoginVO = {
+    token?: TokenDTO;
+    user?: LoginUserVO;
+  };
+
+  type LoginResponseDTO = {
+    code?: number;
+    message?: string;
+    data?: LoginVO;
+  };
+
+  type UserVOResponseDTO = {
+    code?: number;
+    message?: string;
+    data?: UserVO;
   };
 }

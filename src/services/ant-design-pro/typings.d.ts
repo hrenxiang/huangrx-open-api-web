@@ -1,24 +1,33 @@
 declare namespace API {
   type CurrentUser = {
-    data: any;
-    name?: string;
-    avatar?: string;
-    userid?: string;
+    /** 用户ID */
+    userId?: number;
+    /** 角色ID */
+    roleId?: number;
+    /** 角色名称 */
+    roleName?: string;
+    /** 用户名 */
+    username?: string;
+    /** 用户昵称 */
+    nickname?: string;
+    /** 用户类型 */
+    userType?: number;
+    /** 邮件 */
     email?: string;
-    signature?: string;
-    title?: string;
-    group?: string;
-    tags?: { key?: string; label?: string }[];
-    notifyCount?: number;
-    unreadCount?: number;
-    country?: string;
-    access?: string;
-    geographic?: {
-      province?: { label?: string; key?: string };
-      city?: { label?: string; key?: string };
-    };
-    address?: string;
-    phone?: string;
+    /** 号码 */
+    phoneNumber?: string;
+    /** 性别 */
+    sex?: number;
+    /** 用户头像 */
+    avatar?: string;
+    /** 状态 */
+    status?: number;
+    /** 备注 */
+    remark?: string;
+    /** 登录IP */
+    loginIp?: string;
+    /** 登录日期 */
+    loginDate?: string;
   };
 
   type ErrorResponse = {

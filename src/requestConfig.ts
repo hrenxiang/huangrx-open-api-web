@@ -26,7 +26,7 @@ interface ResponseStructure {
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const requestConfig: RequestConfig = {
-  baseURL: 'http://172.31.208.1:19098/open-api',
+  baseURL: 'http://127.0.0.1:19098/open-api',
 
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
@@ -92,8 +92,13 @@ export const requestConfig: RequestConfig = {
   requestInterceptors: [
     (config: RequestOptions) => {
       // 拦截请求配置，进行个性化处理。
-      const url = config?.url?.concat('?token = 123');
-      return { ...config, url };
+      if (localStorage.getItem('OPEN-API-TOKEN')) {
+        config.headers = {
+          Authorization: `Bearer ${localStorage.getItem('OPEN-API-TOKEN')}`,
+        };
+      }
+      console.log(JSON.stringify(config.headers));
+      return { ...config };
     },
   ],
 
@@ -103,7 +108,7 @@ export const requestConfig: RequestConfig = {
       // 拦截响应数据，进行个性化处理
       const { data } = response as unknown as ResponseStructure;
 
-      if (data?.success === false) {
+      if (data?.code !== 0) {
         message.error('请求失败！');
       }
       return response;

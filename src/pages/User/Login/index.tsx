@@ -16,11 +16,11 @@ import {
   ProFormText,
 } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { history, useModel, Helmet } from '@umijs/max';
+import { Helmet, history, useModel } from '@umijs/max';
 import { Alert, message, Tabs } from 'antd';
 import Settings from '../../../../config/defaultSettings';
 import React, { useState } from 'react';
-import { flushSync } from 'react-dom';
+
 const ActionIcons = () => {
   const langClassName = useEmotionCss(({ token }) => {
     return {
@@ -61,7 +61,7 @@ const Login: React.FC = () => {
   // const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [userLoginState] = useState<API.LoginResult>({});
   const [loginType, setLoginType] = useState<string>('normal');
-  const { initialState, setInitialState } = useModel('@@initialState');
+  const { setInitialState } = useModel('@@initialState');
   const containerClassName = useEmotionCss(() => {
     return {
       display: 'flex',
@@ -73,35 +73,23 @@ const Login: React.FC = () => {
       backgroundSize: '100% 100%',
     };
   });
-  const fetchUserInfo = async () => {
-    const userInfo = await initialState?.fetchUserInfo?.();
-    if (userInfo) {
-      flushSync(() => {
-        setInitialState((s) => ({
-          ...s,
-          currentUser: userInfo,
-        }));
-      });
-    }
-  };
   const handleSubmit = async (values: API.LoginDTO) => {
     try {
       // 登录
-      const msg = await login({
+      const response = await login({
         ...values,
         loginType,
       });
-      if (msg.accessToken) {
+      if (response.data && response.data.token?.accessToken) {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
+        localStorage.setItem('OPEN-API-TOKEN', response.data.token.accessToken);
+        setInitialState({ loginUser: response.data });
         const urlParams = new URL(window.location.href).searchParams;
         history.push(urlParams.get('redirect') || '/');
         return;
       }
-      console.log(msg);
-      // 如果失败去设置用户错误信息
-      // setUserLoginState(msg);
+      console.log(response);
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
       console.log(error);
@@ -145,7 +133,7 @@ const Login: React.FC = () => {
             centered
             items={[
               {
-                key: 'account',
+                key: 'normal',
                 label: '账户密码登录',
               },
               {
