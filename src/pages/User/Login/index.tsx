@@ -20,6 +20,7 @@ import { Helmet, history, useModel } from '@umijs/max';
 import { Alert, message, Tabs } from 'antd';
 import Settings from '../../../../config/defaultSettings';
 import React, { useState } from 'react';
+import { flushSync } from 'react-dom';
 
 const ActionIcons = () => {
   const langClassName = useEmotionCss(({ token }) => {
@@ -85,15 +86,21 @@ const Login: React.FC = () => {
         message.success(defaultLoginSuccessMessage);
         localStorage.setItem('OPEN-API-TOKEN', response.data.token.accessToken);
         localStorage.setItem('OPEN-API-REFRESH_TOKEN', response.data.token.refreshToken);
-        setInitialState({ loginUser: response.data });
+
+        flushSync(() => {
+          setInitialState((s) => ({
+            ...s,
+            loginUser: response.data,
+          }));
+        });
+
         const urlParams = new URL(window.location.href).searchParams;
         history.push(urlParams.get('redirect') || '/');
         return;
       }
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
-      console.log(error);
-      message.error(defaultLoginFailureMessage);
+      message.error(defaultLoginFailureMessage).then();
     }
   };
   const { status, type: type } = userLoginState;

@@ -1,13 +1,16 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { message } from 'antd';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { login } from '@/services/open-api/LoginController';
+import { history } from '@@/core/history';
 
 // 与后端约定的响应数据格式
 interface ResponseStructure {
-  success?: boolean;
   data?: any;
   code?: number;
   message?: string;
+  success?: boolean;
 }
 
 /**
@@ -22,8 +25,9 @@ export const requestConfig: RequestConfig = {
   errorConfig: {
     // 错误抛出
     errorThrower: (res) => {
-      const { success, data, code, message } = res as unknown as ResponseStructure;
-      if (!success) {
+      const { data, code, message } = res as unknown as ResponseStructure;
+      console.log(data, code, message, '========errorThrower');
+      if (code !== 0) {
         const error: any = new Error(message);
         error.name = 'BizError';
         error.info = { code, message, data };
@@ -32,25 +36,22 @@ export const requestConfig: RequestConfig = {
     },
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
+      console.log(error, '====errorHandler');
       if (opts?.skipErrorHandler) throw error;
       // 我们的 errorThrower 抛出的错误。
       if (error.name === 'BizError') {
         const errorInfo: ResponseStructure | undefined = error.info;
         if (errorInfo) {
-          message.error(errorInfo.message);
+          message.error(errorInfo.message).then();
         }
-      } else if (error.response) {
-        // Axios 的错误
-        // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        message.error(`Response status:${error.response.status}`);
       } else if (error.request) {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
         // 而在node.js中是 http.ClientRequest 的实例
-        message.error('None response! Please retry.');
+        message.error('None response! Please retry.').then();
       } else {
         // 发送请求时出了点问题
-        message.error('Request error, please retry.');
+        message.error('Request error, please retry.').then();
       }
     },
   },
@@ -58,13 +59,56 @@ export const requestConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
-      // 拦截请求配置，进行个性化处理。
-      if (localStorage.getItem('OPEN-API-TOKEN')) {
-        config.headers = {
-          Authorization: `Bearer ${localStorage.getItem('OPEN-API-TOKEN')}`,
-        };
+      if (config.url === '/login' || config.url === '/register') {
+        return { ...config };
       }
-      console.log(JSON.stringify(config.headers));
+
+      const loginType: string = 'refresh_token';
+      const token = localStorage.getItem('OPEN-API-TOKEN');
+      const refreshToken = localStorage.getItem('OPEN-API-REFRESH_TOKEN');
+
+      // 拦截请求配置，进行个性化处理。
+      if (token) {
+        config.headers = { Authorization: `Bearer ${token}` };
+
+        let decodeToken = jwt.decode(token);
+        const { exp } = decodeToken as JwtPayload;
+        console.log(exp, '=====exp');
+        if (exp) {
+          const expireTime = exp * 1000;
+          let nowTime = new Date().getTime();
+
+          if (nowTime >= expireTime) {
+            if (refreshToken) {
+              console.log(refreshToken, '=====exp3');
+              login({ refreshToken, loginType })
+                .then((res) => {
+                  console.log(res, '=====exp2');
+                  if (res.data && res.data.token?.accessToken && res.data.token?.refreshToken) {
+                    localStorage.setItem('OPEN-API-TOKEN', res.data.token.accessToken);
+                    localStorage.setItem('OPEN-API-REFRESH_TOKEN', res.data.token.refreshToken);
+                    config.headers = { Authorization: `Bearer ${res.data.token.accessToken}` };
+                  } else {
+                    localStorage.removeItem('OPEN-API-TOKEN');
+                    localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
+                  }
+                })
+                .catch(() => {
+                  message.error('请重新登录！').then();
+                  history.push('/user/login');
+                });
+            } else {
+              localStorage.removeItem('OPEN-API-TOKEN');
+              return { ...config };
+            }
+          }
+        } else {
+          message.error('Authorization Token格式错误！').then();
+        }
+      } else {
+        localStorage.removeItem('OPEN-API-TOKEN');
+        localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
+      }
       return { ...config };
     },
   ],
@@ -74,10 +118,8 @@ export const requestConfig: RequestConfig = {
     (response) => {
       // 拦截响应数据，进行个性化处理
       const { data } = response as unknown as ResponseStructure;
-
-      if (data?.code !== 0) {
-        message.error('请求失败！');
-      }
+      data.success = data.code === '0';
+      console.log(JSON.stringify(response), '======responseInterceptors');
       return response;
     },
   ],

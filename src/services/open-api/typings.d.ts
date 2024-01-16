@@ -147,6 +147,12 @@ declare namespace API {
     rows?: ApiInfoVO[];
   };
 
+  type ResponseDTO = {
+    code?: string;
+    message?: string;
+    data?: T;
+  };
+
   type ResponseDTOApiInfoVO = {
     code?: string;
     message?: string;

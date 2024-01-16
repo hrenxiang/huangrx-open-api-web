@@ -7,7 +7,7 @@ import { history, Link } from '@umijs/max';
 import { requestConfig } from './requestConfig';
 import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
-import { loadCurrentUser, login } from '@/services/open-api/LoginController';
+import { loadCurrentUser } from '@/services/open-api/LoginController';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -17,35 +17,19 @@ const loginPath = '/user/login';
  * */
 export async function getInitialState(): Promise<InitialState> {
   const state: InitialState = { loginUser: undefined };
-
-  const loginType: string = 'refresh_token';
-
-  const refreshToken = localStorage.getItem('OPEN-API-REFRESH_TOKEN');
-
   try {
-    const result = await loadCurrentUser();
-    if (result.code === 0 && result.data) {
-      if (!state.loginUser) {
-        state.loginUser = { user: {} };
-      }
-      if (!state.loginUser.user) {
-        state.loginUser.user = {};
-      }
-      state.loginUser.user.userInfo = result.data;
-    } else if (refreshToken) {
-      const result = await login({
-        refreshToken: refreshToken,
-        loginType: loginType,
-      });
+    const { location } = history;
+    if (location.pathname !== loginPath) {
+      const result = await loadCurrentUser();
 
-      if (result.data && result.data.token?.accessToken && result.data.token?.refreshToken) {
-        localStorage.setItem('OPEN-API-TOKEN', result.data.token.accessToken);
-        localStorage.setItem('OPEN-API-REFRESH_TOKEN', result.data.token.refreshToken);
-        state.loginUser = result.data;
-        const urlParams = new URL(window.location.href).searchParams;
-        console.log('刷新token');
-        console.log('刷新token, ', urlParams.get('redirect'));
-        history.push(urlParams.get('redirect') || '/');
+      if (result.code === 0 && result.data) {
+        if (!state.loginUser) {
+          state.loginUser = { user: {} };
+        }
+        if (!state.loginUser.user) {
+          state.loginUser.user = {};
+        }
+        state.loginUser.user.userInfo = result.data;
       }
     }
   } catch (error) {
@@ -74,6 +58,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       const { location } = history;
       // 如果没有登录，重定向到 login
       if (!initialState?.loginUser?.user?.userInfo && location.pathname !== loginPath) {
+        console.log(initialState, '======initialState');
         history.push(loginPath);
       }
     },
