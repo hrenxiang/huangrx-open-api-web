@@ -80,16 +80,16 @@ const Login: React.FC = () => {
         ...values,
         loginType,
       });
-      if (response.data && response.data.token?.accessToken) {
+      if (response.data && response.data.token?.accessToken && response.data.token?.refreshToken) {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
         localStorage.setItem('OPEN-API-TOKEN', response.data.token.accessToken);
+        localStorage.setItem('OPEN-API-REFRESH_TOKEN', response.data.token.refreshToken);
         setInitialState({ loginUser: response.data });
         const urlParams = new URL(window.location.href).searchParams;
         history.push(urlParams.get('redirect') || '/');
         return;
       }
-      console.log(response);
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
       console.log(error);

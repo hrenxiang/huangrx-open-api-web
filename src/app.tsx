@@ -7,7 +7,7 @@ import { history, Link } from '@umijs/max';
 import { requestConfig } from './requestConfig';
 import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
-import { loadCurrentUser } from '@/services/open-api/LoginController';
+import { loadCurrentUser, login } from '@/services/open-api/LoginController';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -16,13 +16,15 @@ const loginPath = '/user/login';
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 export async function getInitialState(): Promise<InitialState> {
-  const state: InitialState = {
-    loginUser: undefined,
-  };
+  const state: InitialState = { loginUser: undefined };
+
+  const loginType: string = 'refresh_token';
+
+  const refreshToken = localStorage.getItem('OPEN-API-REFRESH_TOKEN');
 
   try {
     const result = await loadCurrentUser();
-    if (result.data) {
+    if (result.code === 0 && result.data) {
       if (!state.loginUser) {
         state.loginUser = { user: {} };
       }
@@ -30,6 +32,21 @@ export async function getInitialState(): Promise<InitialState> {
         state.loginUser.user = {};
       }
       state.loginUser.user.userInfo = result.data;
+    } else if (refreshToken) {
+      const result = await login({
+        refreshToken: refreshToken,
+        loginType: loginType,
+      });
+
+      if (result.data && result.data.token?.accessToken && result.data.token?.refreshToken) {
+        localStorage.setItem('OPEN-API-TOKEN', result.data.token.accessToken);
+        localStorage.setItem('OPEN-API-REFRESH_TOKEN', result.data.token.refreshToken);
+        state.loginUser = result.data;
+        const urlParams = new URL(window.location.href).searchParams;
+        console.log('刷新token');
+        console.log('刷新token, ', urlParams.get('redirect'));
+        history.push(urlParams.get('redirect') || '/');
+      }
     }
   } catch (error) {
     history.push(loginPath);
@@ -49,9 +66,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
     },
-    waterMarkProps: {
-      content: initialState?.loginUser?.user?.userInfo?.username,
-    },
+    // waterMarkProps: {
+    //   content: initialState?.loginUser?.user?.userInfo?.username,
+    // },
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;

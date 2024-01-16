@@ -24,13 +24,13 @@ declare namespace API {
 
   type LoginDTO = {
     /** 用户名 */
-    username: string;
+    username?: string;
     /** 密码 */
-    password: string;
+    password?: string;
     /** 登录类型 */
     loginType: string;
     /** 刷新Token */
-    refreshToken: string;
+    refreshToken?: string;
   };
 
   type ApiInfoDTO = {

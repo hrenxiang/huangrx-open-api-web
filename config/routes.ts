@@ -35,8 +35,8 @@ export default [
   {
     icon: 'table',
     path: '/list',
-    name: '查询表格',
-    component: './TableList',
+    name: 'API列表',
+    component: './ApiList',
   },
   {
     path: '/',

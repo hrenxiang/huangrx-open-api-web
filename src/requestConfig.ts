@@ -1,23 +1,13 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
-import { message, notification } from 'antd';
-
-// 错误处理方案： 错误类型
-enum ErrorShowType {
-  SILENT = 0,
-  WARN_MESSAGE = 1,
-  ERROR_MESSAGE = 2,
-  NOTIFICATION = 3,
-  REDIRECT = 9,
-}
+import { message } from 'antd';
 
 // 与后端约定的响应数据格式
 interface ResponseStructure {
-  success: boolean;
-  data: any;
-  errorCode?: number;
-  errorMessage?: string;
-  showType?: ErrorShowType;
+  success?: boolean;
+  data?: any;
+  code?: number;
+  message?: string;
 }
 
 /**
@@ -32,12 +22,11 @@ export const requestConfig: RequestConfig = {
   errorConfig: {
     // 错误抛出
     errorThrower: (res) => {
-      const { success, data, errorCode, errorMessage, showType } =
-        res as unknown as ResponseStructure;
+      const { success, data, code, message } = res as unknown as ResponseStructure;
       if (!success) {
-        const error: any = new Error(errorMessage);
+        const error: any = new Error(message);
         error.name = 'BizError';
-        error.info = { errorCode, errorMessage, showType, data };
+        error.info = { code, message, data };
         throw error; // 抛出自制的错误
       }
     },
@@ -48,29 +37,7 @@ export const requestConfig: RequestConfig = {
       if (error.name === 'BizError') {
         const errorInfo: ResponseStructure | undefined = error.info;
         if (errorInfo) {
-          const { errorMessage, errorCode } = errorInfo;
-          switch (errorInfo.showType) {
-            case ErrorShowType.SILENT:
-              // do nothing
-              break;
-            case ErrorShowType.WARN_MESSAGE:
-              message.warning(errorMessage);
-              break;
-            case ErrorShowType.ERROR_MESSAGE:
-              message.error(errorMessage);
-              break;
-            case ErrorShowType.NOTIFICATION:
-              notification.open({
-                description: errorMessage,
-                message: errorCode,
-              });
-              break;
-            case ErrorShowType.REDIRECT:
-              // TODO: redirect
-              break;
-            default:
-              message.error(errorMessage);
-          }
+          message.error(errorInfo.message);
         }
       } else if (error.response) {
         // Axios 的错误
