@@ -44,7 +44,7 @@ const ApiList: React.FC = () => {
     {
       title: '创建时间',
       sorter: true,
-      dataIndex: 'updatedTime',
+      dataIndex: 'updateTime',
       valueType: 'dateTime',
       hideInSearch: true,
     },

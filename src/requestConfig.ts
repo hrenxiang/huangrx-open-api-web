@@ -83,7 +83,6 @@ export const requestConfig: RequestConfig = {
               console.log(refreshToken, '=====exp3');
               login({ refreshToken, loginType })
                 .then((res) => {
-                  console.log(res, '=====exp2');
                   if (res.data && res.data.token?.accessToken && res.data.token?.refreshToken) {
                     localStorage.setItem('OPEN-API-TOKEN', res.data.token.accessToken);
                     localStorage.setItem('OPEN-API-REFRESH_TOKEN', res.data.token.refreshToken);
@@ -118,8 +117,7 @@ export const requestConfig: RequestConfig = {
     (response) => {
       // 拦截响应数据，进行个性化处理
       const { data } = response as unknown as ResponseStructure;
-      data.success = data.code === '0';
-      console.log(JSON.stringify(response), '======responseInterceptors');
+      data.success = data.code === 0;
       return response;
     },
   ],

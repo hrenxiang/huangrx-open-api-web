@@ -11,6 +11,7 @@ import { loadCurrentUser } from '@/services/open-api/LoginController';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
+const indexPath = '/';
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -19,7 +20,7 @@ export async function getInitialState(): Promise<InitialState> {
   const state: InitialState = { loginUser: undefined };
   try {
     const { location } = history;
-    if (location.pathname !== loginPath) {
+    if (location.pathname !== loginPath && location.pathname !== indexPath) {
       const result = await loadCurrentUser();
 
       if (result.code === 0 && result.data) {
