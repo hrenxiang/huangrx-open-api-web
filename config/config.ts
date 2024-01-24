@@ -136,7 +136,7 @@ export default defineConfig({
     },
     {
       requestLibPath: "import { request } from '@umijs/max'",
-      schemaPath: 'http://192.168.1.5:19098/open-api/v3/api-docs',
+      schemaPath: 'http://127.0.0.1:19098/open-api/v3/api-docs',
       projectName: 'open-api',
     },
   ],
