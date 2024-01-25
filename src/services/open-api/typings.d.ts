@@ -93,7 +93,7 @@ declare namespace API {
 
   type ApiInfoVO = {
     /** 唯一标识符 */
-    id?: string;
+    id?: number;
     /** API端点名称 */
     name?: string;
     /** API端点描述 */
@@ -193,7 +193,7 @@ declare namespace API {
   };
 
   type selectApiInfoParams = {
-    id: string;
+    id: number;
   };
 
   type TokenDTO = {

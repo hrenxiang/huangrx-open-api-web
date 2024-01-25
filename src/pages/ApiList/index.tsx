@@ -1,17 +1,22 @@
 import { list as listByPage } from '@/services/open-api/ApiController';
-import {ActionType, ProColumns, TableDropdown} from '@ant-design/pro-components';
-import { PageContainer, ProTable } from '@ant-design/pro-components';
+import {
+  ActionType,
+  PageContainer,
+  ProColumns,
+  ProTable,
+  TableDropdown,
+} from '@ant-design/pro-components';
 import '@umijs/max';
 import React, { useRef } from 'react';
+import { Link } from '@umijs/max';
 
 const ApiList: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
-  const columns: ProColumns<API.RuleListItem>[] = [
+  const columns: ProColumns<API.ApiInfoVO>[] = [
     {
       title: 'API端点名称',
       dataIndex: 'name',
-      tip: 'The rule name is the unique key',
     },
     {
       title: 'API端点描述',
@@ -62,7 +67,9 @@ const ApiList: React.FC = () => {
         }
 
         return [
-          <a key="view">查看</a>,
+          <Link key="view" to={'/api/detail'}>
+            查看
+          </Link>,
           statusLabel,
           <TableDropdown
             key="actionGroup"
@@ -72,10 +79,11 @@ const ApiList: React.FC = () => {
               { key: 'delete', name: '删除' },
             ]}
           />,
-        ]
+        ];
       },
     },
   ];
+
   return (
     <PageContainer>
       <ProTable<API.ApiInfoVO, API.PageParams>

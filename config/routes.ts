@@ -34,9 +34,17 @@ export default [
   },
   {
     icon: 'table',
-    path: '/list',
+    path: '/api',
     name: 'API列表',
     component: './ApiList',
+    hideChildrenInMenu: true,
+    routes: [
+      {
+        path: '/api/detail',
+        name: '详情',
+        component: './ApiList/components/Detail',
+      },
+    ],
   },
   {
     path: '/',
