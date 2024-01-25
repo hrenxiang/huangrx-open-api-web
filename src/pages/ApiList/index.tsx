@@ -1,5 +1,5 @@
 import { list as listByPage } from '@/services/open-api/ApiController';
-import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import {ActionType, ProColumns, TableDropdown} from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import '@umijs/max';
 import React, { useRef } from 'react';
@@ -52,6 +52,28 @@ const ApiList: React.FC = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      render: (text, record, _, action) => {
+        let statusLabel = null;
+
+        if (record.status === 0) {
+          statusLabel = <a key="online">上线</a>;
+        } else if (record.status === 1) {
+          statusLabel = <a key="offline">下线</a>;
+        }
+
+        return [
+          <a key="view">查看</a>,
+          statusLabel,
+          <TableDropdown
+            key="actionGroup"
+            onSelect={() => action?.reload()}
+            menus={[
+              { key: 'editable', name: '编辑' },
+              { key: 'delete', name: '删除' },
+            ]}
+          />,
+        ]
+      },
     },
   ];
   return (
