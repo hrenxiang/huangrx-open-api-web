@@ -34,13 +34,17 @@ export default [
   },
   {
     icon: 'table',
-    path: '/api',
+    path: '/interface',
     name: 'API列表',
-    component: './ApiList',
     hideChildrenInMenu: true,
     routes: [
       {
-        path: '/api/detail',
+        path: '/interface',
+        name: 'API列表管理页',
+        component: './ApiList',
+      },
+      {
+        path: '/interface/detail',
         name: '详情',
         component: './ApiList/components/Detail',
       },

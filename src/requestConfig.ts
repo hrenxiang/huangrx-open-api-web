@@ -73,14 +73,12 @@ export const requestConfig: RequestConfig = {
 
         let decodeToken = jwt.decode(token);
         const { exp } = decodeToken as JwtPayload;
-        console.log(exp, '=====exp');
         if (exp) {
           const expireTime = exp * 1000;
           let nowTime = new Date().getTime();
 
           if (nowTime >= expireTime) {
             if (refreshToken) {
-              console.log(refreshToken, '=====exp3');
               login({ refreshToken, loginType })
                 .then((res) => {
                   if (res.data && res.data.token?.accessToken && res.data.token?.refreshToken) {

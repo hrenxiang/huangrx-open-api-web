@@ -67,7 +67,7 @@ const ApiList: React.FC = () => {
         }
 
         return [
-          <Link key="view" to={'/api/detail'}>
+          <Link key="view" to={'/interface/detail'} state={{ data: record }}>
             查看
           </Link>,
           statusLabel,

@@ -8,6 +8,7 @@ import { requestConfig } from './requestConfig';
 import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
 import { loadCurrentUser } from '@/services/open-api/LoginController';
+import logo from '../public/logo.svg';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -43,6 +44,7 @@ export async function getInitialState(): Promise<InitialState> {
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
+    logo: logo,
     actionsRender: () => [<Question key="doc" />],
     avatarProps: {
       src: initialState?.loginUser?.user?.userInfo?.avatar,
@@ -59,7 +61,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       const { location } = history;
       // 如果没有登录，重定向到 login
       if (!initialState?.loginUser?.user?.userInfo && location.pathname !== loginPath) {
-        console.log(initialState, '======initialState');
         history.push(loginPath);
       }
     },
