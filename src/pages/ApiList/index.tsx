@@ -6,9 +6,12 @@ import {
   ProTable,
   TableDropdown,
 } from '@ant-design/pro-components';
+import { Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import '@umijs/max';
 import React, { useRef } from 'react';
 import { Link } from '@umijs/max';
+import { history } from '@@/core/history';
 
 const ApiList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -109,6 +112,18 @@ const ApiList: React.FC = () => {
           };
         }}
         columns={columns}
+        toolBarRender={() => [
+          <Button
+            key="button"
+            icon={<PlusOutlined />}
+            onClick={() => {
+              history.push('/interface/initialize');
+            }}
+            type="primary"
+          >
+            新建
+          </Button>,
+        ]}
       />
     </PageContainer>
   );

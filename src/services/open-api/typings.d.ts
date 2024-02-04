@@ -255,4 +255,48 @@ declare namespace API {
     message?: string;
     data?: UserVO;
   };
+
+  type Pricing = {
+    id?: number;
+    apiInfoId?: number;
+    userLevel: number;
+    freeApiCount: number;
+    dailyQuota: number;
+    price: number;
+    description: string;
+  };
+
+  type RequestParam = {
+    id?: number;
+    apiInfoId?: number;
+    paramName: string;
+    paramType: number;
+    required: number;
+    exampleValue: string;
+    description: string;
+  };
+
+  type ResponseParam = {
+    id?: number;
+    apiInfoId?: number;
+    responseType: string;
+    paramName: string;
+    paramType: number;
+    exampleValue: string;
+    description: string;
+  };
+
+  type ApiInfo = {
+    id?: number;
+    name: string;
+    description: string;
+    status: number;
+    method: string;
+    url: string;
+    rateLimit: number;
+    authRequired: number;
+    pricing: Pricing;
+    requestParam: RequestParam;
+    responseParam: ResponseParam;
+  };
 }

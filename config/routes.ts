@@ -48,6 +48,11 @@ export default [
         name: '详情',
         component: './ApiList/components/Detail',
       },
+      {
+        path: '/interface/initialize',
+        name: '新建',
+        component: './ApiList/components/InitializeForm',
+      },
     ],
   },
   {

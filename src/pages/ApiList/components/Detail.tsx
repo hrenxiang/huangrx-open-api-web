@@ -1,4 +1,4 @@
-import { PageContainer, ProCard, ProDescriptions, ProTable } from '@ant-design/pro-components';
+import { PageContainer, ProCard, ProDescriptions, ProTable, ProColumns } from '@ant-design/pro-components';
 import React from 'react';
 import { Divider } from 'antd';
 import { useLocation } from 'react-router-dom';
@@ -18,6 +18,29 @@ const Detail: React.FC = () => {
     fontSize: '16px',
     lineHeight: 1.5,
   };
+
+  const columns: ProColumns<API.ApiInfoVO>[] = [
+    {
+      title: '名称',
+      dataIndex: 'name',
+    },
+    {
+      title: '类型',
+      dataIndex: 'description',
+    },
+    {
+      title: '必须',
+      dataIndex: 'rateLimit',
+    },
+    {
+      title: '示例值/默认值',
+      dataIndex: 'status',
+    },
+    {
+      title: '说明',
+      dataIndex: 'updateTime',
+    }
+  ];
 
   return (
     <PageContainer>
@@ -88,6 +111,7 @@ const Detail: React.FC = () => {
         <p style={titleStyle}>请求参数</p>
         <ProTable
           className={'interface-detail-table'}
+          columns={columns}
           options={false}
           search={false}
           style={{ paddingLeft: '-24px', paddingRight: '-24px' }}
