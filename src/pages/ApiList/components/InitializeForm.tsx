@@ -9,7 +9,8 @@ import {
   StepsForm,
 } from '@ant-design/pro-components';
 import { message } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
+import { ApiStatusEnum, mapToArray } from '@/services/open-api/enums';
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -20,9 +21,6 @@ const waitTime = (time: number = 100) => {
 };
 
 const InitializeForm: React.FC = () => {
-
-  const [ApiInfoParam, setApiInfoParam] = useState<API.ApiInfo>();
-
   return (
     <PageContainer>
       <ProCard boxShadow>
@@ -42,7 +40,7 @@ const InitializeForm: React.FC = () => {
             name="base"
             title="基础信息"
             onFinish={async (values) => {
-              console.log(values, "======step1")
+              console.log(values, '======step1');
               return true;
             }}
           >
@@ -75,22 +73,11 @@ const InitializeForm: React.FC = () => {
                 rules={[{ required: true }]}
               />
 
-              <ProFormText
-                name="description"
+              <ProFormSelect
+                options={mapToArray(ApiStatusEnum)}
                 width="md"
-                label="接口描述"
-                tooltip="最长为 24 位，用于标定的唯一 id"
-                placeholder="请输入接口描述"
-                rules={[{ required: true }]}
-              />
-
-              <ProFormText
                 name="status"
-                width="md"
                 label="接口状态"
-                tooltip="最长为 24 位，用于标定的唯一 id"
-                placeholder="请输入接口状态"
-                rules={[{ required: true }]}
               />
 
               <ProFormText
@@ -108,6 +95,24 @@ const InitializeForm: React.FC = () => {
                 label="请求地址"
                 tooltip="最长为 24 位，用于标定的唯一 id"
                 placeholder="请输入请求地址"
+                rules={[{ required: true }]}
+              />
+
+              <ProFormText
+                name="rateLimit"
+                width="md"
+                label="调用频率限制"
+                tooltip="最长为 24 位，用于标定的唯一 id"
+                placeholder="请输入请求地址"
+                rules={[{ required: true }]}
+              />
+
+              <ProFormText
+                name="authRequired"
+                width="md"
+                label="是否需要认证"
+                tooltip="最长为 24 位，用于标定的唯一 id"
+                placeholder="是否需要认证"
                 rules={[{ required: true }]}
               />
             </ProCard>
