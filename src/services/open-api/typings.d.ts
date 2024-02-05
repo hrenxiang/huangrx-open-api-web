@@ -267,23 +267,25 @@ declare namespace API {
   };
 
   type RequestParam = {
+    key: React.Key;
     id?: number;
     apiInfoId?: number;
-    paramName: string;
-    paramType: number;
-    required: number;
-    exampleValue: string;
-    description: string;
+    paramName?: string;
+    paramType?: number;
+    required?: number;
+    exampleValue?: string;
+    description?: string;
   };
 
   type ResponseParam = {
+    key: React.Key;
     id?: number;
     apiInfoId?: number;
-    responseType: string;
-    paramName: string;
-    paramType: number;
-    exampleValue: string;
-    description: string;
+    responseType?: string;
+    paramName?: string;
+    paramType?: number;
+    exampleValue?: string;
+    description?: string;
   };
 
   type ApiInfo = {

@@ -3,10 +3,10 @@
  * @param {Map<string, [number, string, string]>} map 输入的 Map 对象
  * @returns {{ value: number; label: string }[]} 转换后的对象数组
  */
-export function mapToArray(
-  map: Map<string, [number, string, string]>,
-): { value: number; label: string }[] {
-  const result: { value: number; label: string }[] = [];
+export function mapToArray<T>(
+  map: Map<string, [T, string, string]>,
+): { value: T; label: string }[] {
+  const result: { value: T; label: string }[] = [];
   map.forEach((value) => {
     result.push({ value: value[0], label: value[1] });
   });
@@ -61,4 +61,27 @@ export function checkByValue(
 export const ApiStatusEnum = new Map<string, [number, string, string]>([
   ['ENABLE', [1, '已生效', 'extra']],
   ['DISABLE', [0, '未生效', 'extra']],
+]);
+
+/**
+ * HTTP 请求方法枚举
+ * @description 这个枚举包含常见的 HTTP 请求方法及其描述信息。
+ */
+export const HttpMethodEnum = new Map<string, [string, string, string]>([
+  ['GET', ['GET', 'GET', '用于从服务器获取数据']],
+  ['POST', ['POST', 'POST', '用于向服务器发送数据']],
+  ['DELETE', ['DELETE', 'DELETE', '用于从服务器删除数据']],
+  ['PUT', ['PUT', 'PUT', '用于更新服务器上的资源']],
+  ['PATCH', ['PATCH', 'PATCH', '用于部分更新服务器上的资源']],
+  ['HEAD', ['HEAD', 'HEAD', '用于仅获取资源的头部信息']],
+  ['OPTIONS', ['OPTIONS', 'OPTIONS', '用于获取服务器支持的请求方法']],
+  ['TRACE', ['TRACE', 'TRACE', '用于测试或诊断']],
+]);
+
+/**
+ * 是否 状态枚举
+ */
+export const YesNoEnum = new Map<string, [number, string, string]>([
+  ['YES', [1, '是', 'extra']],
+  ['NO', [0, '否', 'extra']],
 ]);

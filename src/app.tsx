@@ -1,43 +1,99 @@
 import Footer from '@/components/Footer';
 import { Question } from '@/components/RightContent';
 import { LinkOutlined } from '@ant-design/icons';
-import { SettingDrawer } from '@ant-design/pro-components';
+// import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
 import { requestConfig } from './requestConfig';
 import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
-import { loadCurrentUser } from '@/services/open-api/LoginController';
+import { loadCurrentUser, login } from '@/services/open-api/LoginController';
 import logo from '../public/logo.svg';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { message } from 'antd';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
-const indexPath = '/';
+const indexPath = '/welcome';
+const whiteList = ['/user/login', '/admin/sub-page'];
 
 /**
+ * 相当于 路由守卫
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 export async function getInitialState(): Promise<InitialState> {
+  const { location } = history;
   const state: InitialState = { loginUser: undefined };
-  try {
-    const { location } = history;
-    if (location.pathname !== loginPath && location.pathname !== indexPath) {
-      const result = await loadCurrentUser();
+  const token = localStorage.getItem('OPEN-API-TOKEN');
+  const refreshToken = localStorage.getItem('OPEN-API-REFRESH_TOKEN');
+  const loginType: string = 'refresh_token';
 
-      if (result.code === 0 && result.data) {
-        if (!state.loginUser) {
-          state.loginUser = { user: {} };
+  if (token) {
+    if (location.pathname === loginPath) {
+      let decodeToken = jwt.decode(token);
+      const { exp } = decodeToken as JwtPayload;
+      if (exp) {
+        const expireTime = exp * 1000;
+        let nowTime = new Date().getTime();
+
+        if (nowTime >= expireTime) {
+          if (refreshToken) {
+            login({ refreshToken, loginType })
+              .then((res) => {
+                if (res.data && res.data.token?.accessToken && res.data.token?.refreshToken) {
+                  localStorage.setItem('OPEN-API-TOKEN', res.data.token.accessToken);
+                  localStorage.setItem('OPEN-API-REFRESH_TOKEN', res.data.token.refreshToken);
+                  history.push(indexPath);
+                } else {
+                  localStorage.removeItem('OPEN-API-TOKEN');
+                  localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
+                  message.error('请重新登录！').then();
+                  history.push(loginPath);
+                }
+              })
+              .catch(() => {
+                message.error('请重新登录！').then();
+                history.push(loginPath);
+              });
+          } else {
+            localStorage.removeItem('OPEN-API-TOKEN');
+            message.error('请重新登录！').then();
+            history.push(loginPath);
+          }
+        } else {
+          history.push(indexPath);
         }
-        if (!state.loginUser.user) {
-          state.loginUser.user = {};
+      } else {
+        message.error('Authorization Token格式错误！').then();
+        history.push(loginPath);
+      }
+    } else {
+      try {
+        if (whiteList.indexOf(location.pathname) === -1) {
+          const result = await loadCurrentUser();
+          if (result.code === 0 && result.data) {
+            if (!state.loginUser) {
+              state.loginUser = { user: {} };
+            }
+            if (!state.loginUser.user) {
+              state.loginUser.user = {};
+            }
+            state.loginUser.user.userInfo = result.data;
+          }
+        } else {
+          history.push(location.pathname);
         }
-        state.loginUser.user.userInfo = result.data;
+      } catch (error) {
+        history.push(loginPath);
       }
     }
-  } catch (error) {
-    history.push(loginPath);
+  } else {
+    if (whiteList.indexOf(location.pathname) !== -1) {
+      history.push(location.pathname);
+    } else {
+      history.push(loginPath);
+    }
   }
-
   return state;
 }
 
@@ -101,17 +157,17 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       return (
         <>
           {children}
-          <SettingDrawer
-            disableUrlParams
-            enableDarkTheme
-            settings={initialState?.settings}
-            onSettingChange={(settings) => {
-              setInitialState((preInitialState) => ({
-                ...preInitialState,
-                settings,
-              }));
-            }}
-          />
+          {/*<SettingDrawer*/}
+          {/*  disableUrlParams*/}
+          {/*  enableDarkTheme*/}
+          {/*  settings={initialState?.settings}*/}
+          {/*  onSettingChange={(settings) => {*/}
+          {/*    setInitialState((preInitialState) => ({*/}
+          {/*      ...preInitialState,*/}
+          {/*      settings,*/}
+          {/*    }));*/}
+          {/*  }}*/}
+          {/*/>*/}
         </>
       );
     },

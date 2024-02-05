@@ -99,8 +99,7 @@ const Login: React.FC = () => {
         return;
       }
     } catch (error) {
-      const defaultLoginFailureMessage = '登录失败，请重试！';
-      message.error(defaultLoginFailureMessage).then();
+
     }
   };
   const { status, type: type } = userLoginState;

@@ -13,8 +13,9 @@ interface ResponseStructure {
   success?: boolean;
 }
 
+const LoginPath = '/login';
+
 /**
- * @name 错误处理
  * pro 自带的错误处理， 可以在这里做自己的改动
  * @doc https://umijs.org/docs/max/request#配置
  */
@@ -26,7 +27,6 @@ export const requestConfig: RequestConfig = {
     // 错误抛出
     errorThrower: (res) => {
       const { data, code, message } = res as unknown as ResponseStructure;
-      console.log(data, code, message, '========errorThrower');
       if (code !== 0) {
         const error: any = new Error(message);
         error.name = 'BizError';
@@ -48,10 +48,10 @@ export const requestConfig: RequestConfig = {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
         // 而在node.js中是 http.ClientRequest 的实例
-        message.error('None response! Please retry.').then();
+        message.error('服务器无响应，请重试！').then();
       } else {
         // 发送请求时出了点问题
-        message.error('Request error, please retry.').then();
+        message.error('请求错误，请重试！').then();
       }
     },
   },
