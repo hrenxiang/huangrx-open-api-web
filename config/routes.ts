@@ -16,21 +16,17 @@ export default [
     component: './Welcome',
   },
   {
-    path: '/admin',
+    path: '/index',
     icon: 'crown',
     layout: false,
     hideChildrenInMenu: true,
     name: '管理页',
     routes: [
       {
-        path: '/admin',
-        redirect: '/admin/sub-page',
-      },
-      {
-        path: '/admin/sub-page',
-        name: '二级管理页',
+        path: '/index',
+        name: '首页',
         layout: false,
-        component: './Admin',
+        component: './Index',
       },
     ],
   },
