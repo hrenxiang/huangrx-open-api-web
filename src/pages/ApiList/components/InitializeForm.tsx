@@ -32,6 +32,7 @@ const InitializeForm: React.FC = () => {
     {
       title: '参数名称',
       dataIndex: 'paramName',
+      ellipsis: true,
       tooltip: '参数名称',
     },
     {
@@ -47,11 +48,13 @@ const InitializeForm: React.FC = () => {
     {
       title: '示例值',
       dataIndex: 'exampleValue',
+      ellipsis: true,
       tooltip: '示例值',
     },
     {
       title: '描述信息',
       dataIndex: 'description',
+      ellipsis: true,
       tooltip: '描述信息',
     },
     {
@@ -88,6 +91,7 @@ const InitializeForm: React.FC = () => {
     {
       title: '参数名称',
       dataIndex: 'paramName',
+      ellipsis: true,
       tooltip: '参数名称',
     },
     {
@@ -103,11 +107,13 @@ const InitializeForm: React.FC = () => {
     {
       title: '示例值',
       dataIndex: 'exampleValue',
+      ellipsis: true,
       tooltip: '示例值',
     },
     {
       title: '描述信息',
       dataIndex: 'description',
+      ellipsis: true,
       tooltip: '描述信息',
     },
     {
@@ -252,7 +258,7 @@ const InitializeForm: React.FC = () => {
               <EditableProTable<API.RequestParam>
                 name="requestParam"
                 rowKey="key"
-                scroll={{ x: '15%' }}
+                scroll={{ x: '16.6%' }}
                 loading={false}
                 columns={requestParamColumns}
                 recordCreatorProps={{
@@ -283,7 +289,7 @@ const InitializeForm: React.FC = () => {
               <EditableProTable<API.ResponseParam>
                 name="responseParam"
                 rowKey="key"
-                scroll={{ x: '15%' }}
+                scroll={{ x: '16.6%' }}
                 loading={false}
                 columns={responseParamColumns}
                 recordCreatorProps={{

@@ -7,7 +7,6 @@ import { message } from 'antd';
 import Footer from '@/components/Footer';
 import { AvatarDropdown, AvatarName } from '@/components/RightContent/AvatarDropdown';
 import { Question } from '@/components/RightContent';
-import logo from '@@/plugin-layout/Logo';
 import type { RunTimeLayoutConfig } from '@umijs/max';
 import { LinkOutlined } from '@ant-design/icons';
 
@@ -110,7 +109,7 @@ export async function getInitialState(): Promise<InitialState> {
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
-    logo: logo,
+    logo: '/logo.svg',
     actionsRender: () => [<Question key="doc" />],
     avatarProps: {
       src: initialState?.loginUser?.user?.userInfo?.avatar || 'https://images.huangrx.cn/uploads/2023/04/20/6440f5beec6b8.png',
