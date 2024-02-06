@@ -18,8 +18,9 @@ export default [
   {
     path: '/admin',
     icon: 'crown',
+    layout: false,
+    hideChildrenInMenu: true,
     name: '管理页',
-    access: 'canAdmin',
     routes: [
       {
         path: '/admin',
@@ -28,6 +29,7 @@ export default [
       {
         path: '/admin/sub-page',
         name: '二级管理页',
+        layout: false,
         component: './Admin',
       },
     ],

@@ -1,21 +1,71 @@
-import Footer from '@/components/Footer';
-import { Question } from '@/components/RightContent';
-import { LinkOutlined } from '@ant-design/icons';
 // import { SettingDrawer } from '@ant-design/pro-components';
-import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
 import { requestConfig } from './requestConfig';
-import React from 'react';
-import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
 import { loadCurrentUser, login } from '@/services/open-api/LoginController';
-import logo from '../public/logo.svg';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { message } from 'antd';
+import Footer from '@/components/Footer';
+import { AvatarDropdown, AvatarName } from '@/components/RightContent/AvatarDropdown';
+import { Question } from '@/components/RightContent';
+import logo from '@@/plugin-layout/Logo';
+import type { RunTimeLayoutConfig } from '@umijs/max';
+import { LinkOutlined } from '@ant-design/icons';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
-const indexPath = '/welcome';
+const indexPath = '/';
 const whiteList = ['/user/login', '/admin/sub-page'];
+
+function verifyWhite(location: any) {
+  if (whiteList.indexOf(location.pathname) !== -1) {
+    history.push(location.pathname);
+  } else {
+    message.warning('您需要登录才能访问此页面！').then();
+    history.push(loginPath);
+  }
+}
+
+function verifyJumpLoginPage(token: string, refreshToken: string | null, loginType: string) {
+  let decodeToken = jwt.decode(token);
+  const { exp } = decodeToken as JwtPayload;
+  if (exp) {
+    const expireTime = exp * 1000;
+    let nowTime = new Date().getTime();
+
+    if (nowTime >= expireTime) {
+      if (refreshToken) {
+        login({ refreshToken, loginType })
+          .then((res) => {
+            if (res.data && res.data.token?.accessToken && res.data.token?.refreshToken) {
+              localStorage.setItem('OPEN-API-TOKEN', res.data.token.accessToken);
+              localStorage.setItem('OPEN-API-REFRESH_TOKEN', res.data.token.refreshToken);
+              history.push(indexPath);
+            } else {
+              localStorage.removeItem('OPEN-API-TOKEN');
+              localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
+              message.error('请重新登录！').then();
+              history.push(loginPath);
+            }
+          })
+          .catch(() => {
+            localStorage.removeItem('OPEN-API-TOKEN');
+            localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
+            message.error('请重新登录！').then();
+            history.push(loginPath);
+          });
+      } else {
+        localStorage.removeItem('OPEN-API-TOKEN');
+        message.error('请重新登录！').then();
+        history.push(loginPath);
+      }
+    } else {
+      history.push('/');
+    }
+  } else {
+    message.error('Authorization Token格式错误！').then();
+    history.push(loginPath);
+  }
+}
 
 /**
  * 相当于 路由守卫
@@ -30,43 +80,7 @@ export async function getInitialState(): Promise<InitialState> {
 
   if (token) {
     if (location.pathname === loginPath) {
-      let decodeToken = jwt.decode(token);
-      const { exp } = decodeToken as JwtPayload;
-      if (exp) {
-        const expireTime = exp * 1000;
-        let nowTime = new Date().getTime();
-
-        if (nowTime >= expireTime) {
-          if (refreshToken) {
-            login({ refreshToken, loginType })
-              .then((res) => {
-                if (res.data && res.data.token?.accessToken && res.data.token?.refreshToken) {
-                  localStorage.setItem('OPEN-API-TOKEN', res.data.token.accessToken);
-                  localStorage.setItem('OPEN-API-REFRESH_TOKEN', res.data.token.refreshToken);
-                  history.push(indexPath);
-                } else {
-                  localStorage.removeItem('OPEN-API-TOKEN');
-                  localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
-                  message.error('请重新登录！').then();
-                  history.push(loginPath);
-                }
-              })
-              .catch(() => {
-                message.error('请重新登录！').then();
-                history.push(loginPath);
-              });
-          } else {
-            localStorage.removeItem('OPEN-API-TOKEN');
-            message.error('请重新登录！').then();
-            history.push(loginPath);
-          }
-        } else {
-          history.push(indexPath);
-        }
-      } else {
-        message.error('Authorization Token格式错误！').then();
-        history.push(loginPath);
-      }
+      verifyJumpLoginPage(token, refreshToken, loginType);
     } else {
       try {
         if (whiteList.indexOf(location.pathname) === -1) {
@@ -88,58 +102,35 @@ export async function getInitialState(): Promise<InitialState> {
       }
     }
   } else {
-    if (whiteList.indexOf(location.pathname) !== -1) {
-      history.push(location.pathname);
-    } else {
-      history.push(loginPath);
-    }
+    verifyWhite(location);
   }
   return state;
 }
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
-export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
+export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     logo: logo,
     actionsRender: () => [<Question key="doc" />],
     avatarProps: {
-      src: initialState?.loginUser?.user?.userInfo?.avatar,
+      src: initialState?.loginUser?.user?.userInfo?.avatar || 'https://images.huangrx.cn/uploads/2023/04/20/6440f5beec6b8.png',
       title: <AvatarName />,
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
     },
-    // waterMarkProps: {
-    //   content: initialState?.loginUser?.user?.userInfo?.username,
-    // },
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.loginUser?.user?.userInfo && location.pathname !== loginPath) {
+      if (
+        !initialState?.loginUser?.user?.userInfo &&
+        location.pathname !== loginPath &&
+        whiteList.indexOf(location.pathname) !== -1
+      ) {
         history.push(loginPath);
       }
     },
-    layoutBgImgList: [
-      {
-        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/D2LWSqNny4sAAAAAAAAAAAAAFl94AQBr',
-        left: 85,
-        bottom: 100,
-        height: '303px',
-      },
-      {
-        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/C2TWRpJpiC0AAAAAAAAAAAAAFl94AQBr',
-        bottom: -68,
-        right: -45,
-        height: '303px',
-      },
-      {
-        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/F6vSTbj8KpYAAAAAAAAAAAAAFl94AQBr',
-        bottom: 0,
-        left: 0,
-        width: '331px',
-      },
-    ],
     links: isDev
       ? [
           <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
@@ -149,9 +140,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         ]
       : [],
     menuHeaderRender: undefined,
-    // 自定义 403 页面
-    // unAccessible: <div>unAccessible</div>,
-    // 增加一个 loading 的状态
     childrenRender: (children) => {
       // if (initialState?.loading) return <PageLoading />;
       return (
