@@ -301,4 +301,10 @@ declare namespace API {
     requestParam: RequestParam;
     responseParam: ResponseParam;
   };
+
+  type LoginResult = {
+    status?: string;
+    type?: string;
+    currentAuthority?: string;
+  };
 }

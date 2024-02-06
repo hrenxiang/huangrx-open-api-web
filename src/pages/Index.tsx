@@ -1,44 +1,35 @@
-import { HeartTwoTone, SmileTwoTone } from '@ant-design/icons';
-import { PageContainer } from '@ant-design/pro-components';
 import '@umijs/max';
-import { Alert, Card, Typography } from 'antd';
 import React from 'react';
+import './index.less';
+import {Link} from "@umijs/max";
+
 const Index: React.FC = () => {
   return (
-    <PageContainer>
-      <Card>
-        <Alert
-          message={'更快更强的重型组件，已经发布。'}
-          type="success"
-          showIcon
-          banner
-          style={{
-            margin: -12,
-            marginBottom: 48,
-          }}
-        />
-        <Typography.Title
-          level={2}
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          <SmileTwoTone /> Ant Design Pro <HeartTwoTone twoToneColor="#eb2f96" /> You
-        </Typography.Title>
-      </Card>
-      <p
-        style={{
-          textAlign: 'center',
-          marginTop: 24,
-        }}
-      >
-        Want to add more pages? Please refer to{' '}
-        <a href="https://pro.ant.design/docs/block-cn" target="_blank" rel="noopener noreferrer">
-          use block
-        </a>
-        。
-      </p>
-    </PageContainer>
+    <div className="index-container">
+      <div className="index-header-container">
+        <div className="index-header-content">
+          <a className="index-header-logo">
+            <div>Open Api</div>
+            <div>🌴 Huangrx</div>
+          </a>
+          <div className="index-header-menu">
+            <div className="index-header-menu__item">文档</div>
+            <div>🍥</div>
+            <div className="index-header-menu__item">联系我们</div>
+            <div>🍥</div>
+            <Link className="index-header-menu__item index-header-menu__login" to={'/user/login'}>
+              登录
+            </Link>
+          </div>
+        </div>
+
+        <div className="index-header-wave__container">
+          <div className="index-header-wave"></div>
+        </div>
+      </div>
+
+      <div className="index-first-part">123</div>
+    </div>
   );
 };
 export default Index;

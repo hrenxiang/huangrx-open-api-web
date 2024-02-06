@@ -22,6 +22,9 @@ const waitTime = (time: number = 100) => {
 };
 
 const InitializeForm: React.FC = () => {
+
+  const [firstStepData, setFirstStepData] = useState<API.ApiInfo>();
+
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
 
   const [responseEditableKeys, setResponseEditableRowKeys] = useState<React.Key[]>([]);
@@ -165,7 +168,8 @@ const InitializeForm: React.FC = () => {
           <StepsForm.StepForm
             name="base"
             title="基础信息"
-            onFinish={async () => {
+            onFinish={async (value) => {
+              setFirstStepData(value as API.ApiInfo)
               return true;
             }}
           >
@@ -321,14 +325,16 @@ const InitializeForm: React.FC = () => {
             </ProCard>
           </StepsForm.StepForm>
 
-          <StepsForm.StepForm name="checkbox" title="接口测试">
+          <StepsForm.StepForm name="test" title="接口测试">
             <ProCard
               style={{
                 minWidth: 800,
                 marginBlockEnd: 16,
                 maxWidth: '100%',
               }}
-            ></ProCard>
+            >
+
+            </ProCard>
           </StepsForm.StepForm>
 
           <StepsForm.StepForm name="time" title="上传结果">

@@ -1,4 +1,4 @@
-import { outLogin } from '@/services/ant-design-pro/login';
+import { outLogin } from '@/services/open-api/LoginController';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { history, useModel } from '@umijs/max';
@@ -26,6 +26,8 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
    */
   const loginOut = async () => {
     await outLogin();
+    localStorage.removeItem('OPEN-API-TOKEN');
+    localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
     const { search, pathname } = window.location;
     const urlParams = new URL(window.location.href).searchParams;
     /** 此方法会跳转到 redirect 参数所在的位置 */

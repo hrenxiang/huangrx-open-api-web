@@ -22,6 +22,16 @@ export async function register(body: API.AddUserDTO, options?: { [key: string]: 
   });
 }
 
+/** 用户登出接口 POST /logout */
+export async function outLogin() {
+  return request<API.ResponseDTOLong>('/logout', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+}
+
 /** 查询当前登录用户 GET /currentUser */
 export async function loadCurrentUser(options?: { [key: string]: any }) {
   return request<API.UserVOResponseDTO>('/currentUser', {
