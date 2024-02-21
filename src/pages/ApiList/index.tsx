@@ -89,7 +89,7 @@ const ApiList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.ApiInfoVO, API.PageParams>
+      <ProTable<API.ApiInfoVO>
         headerTitle={'API列表'}
         actionRef={actionRef}
         rowKey="id"

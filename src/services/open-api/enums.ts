@@ -52,7 +52,7 @@ export function checkByValue(
   const enumValue = enumMap.get(enumKey);
 
   // 比较枚举值和给定值是否相等，并返回结果
-  return enumValue![0] === value;
+  return enumValue![0] === parseInt(String(value));
 }
 
 /**

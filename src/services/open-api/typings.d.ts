@@ -257,13 +257,14 @@ declare namespace API {
   };
 
   type Pricing = {
+    key: React.Key;
     id?: number;
     apiInfoId?: number;
-    userLevel: number;
-    freeApiCount: number;
-    dailyQuota: number;
-    price: number;
-    description: string;
+    userLevel?: number;
+    freeApiCount?: number;
+    dailyQuota?: number;
+    price?: number;
+    description?: string;
   };
 
   type RequestParam = {
@@ -298,8 +299,8 @@ declare namespace API {
     rateLimit: number;
     authRequired: number;
     pricing: Pricing;
-    requestParam: RequestParam;
-    responseParam: ResponseParam;
+    requestParam: RequestParam[];
+    responseParam: ResponseParam[];
   };
 
   type LoginResult = {
