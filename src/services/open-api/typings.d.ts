@@ -289,6 +289,16 @@ declare namespace API {
     description?: string;
   };
 
+  type ResponseCodes = {
+    key: React.Key;
+    id?: number;
+    apiInfoId?: number;
+    errorCode?: number;
+    errorMessage?: string;
+    explanationHelp?: string;
+    success?: number;
+  };
+
   type ApiInfo = {
     id?: number;
     name: string;
@@ -301,6 +311,7 @@ declare namespace API {
     pricing: Pricing;
     requestParam: RequestParam[];
     responseParam: ResponseParam[];
+    responseCodes: ResponseCodes[];
   };
 
   type LoginResult = {

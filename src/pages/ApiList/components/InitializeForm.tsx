@@ -16,6 +16,8 @@ import React, { useRef, useState } from 'react';
 import {
   ApiStatusEnum,
   checkByValue,
+  FieldTypeEnum,
+  generateValueEnum,
   HttpMethodEnum,
   mapToArray,
   YesNoEnum,
@@ -38,6 +40,8 @@ const InitializeForm: React.FC = () => {
 
   const [responseEditableKeys, setResponseEditableRowKeys] = useState<React.Key[]>([]);
 
+  const [responseCodesEditableKeys, setResponseCodesEditableRowKeys] = useState<React.Key[]>([]);
+
   const [pricingEditableKeys, setPricingEditableRowKeys] = useState<React.Key[]>([]);
 
   const formRef = useRef<ProFormInstance>();
@@ -48,16 +52,44 @@ const InitializeForm: React.FC = () => {
       dataIndex: 'paramName',
       ellipsis: true,
       tooltip: '参数名称',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入参数名称',
+          },
+        ],
+      },
     },
     {
       title: '参数类型',
       dataIndex: 'paramType',
+      valueType: 'select',
+      valueEnum: generateValueEnum(FieldTypeEnum),
       tooltip: '参数类型',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入参数类型',
+          },
+        ],
+      },
     },
     {
       title: '是否必须',
       dataIndex: 'required',
+      valueType: 'select',
+      valueEnum: generateValueEnum(YesNoEnum),
       tooltip: '是否必须',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入是否必须',
+          },
+        ],
+      },
     },
     {
       title: '示例值',
@@ -107,16 +139,44 @@ const InitializeForm: React.FC = () => {
       dataIndex: 'paramName',
       ellipsis: true,
       tooltip: '参数名称',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入参数名称',
+          },
+        ],
+      },
     },
     {
       title: '参数类型',
       dataIndex: 'responseType',
+      valueType: 'select',
+      valueEnum: generateValueEnum(FieldTypeEnum),
       tooltip: '参数类型',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入参数类型',
+          },
+        ],
+      },
     },
     {
       title: '是否必须',
       dataIndex: 'required',
+      valueType: 'select',
+      valueEnum: generateValueEnum(YesNoEnum),
       tooltip: '是否必须',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入是否必须',
+          },
+        ],
+      },
     },
     {
       title: '示例值',
@@ -160,21 +220,116 @@ const InitializeForm: React.FC = () => {
     },
   ];
 
+  const responseCodesColumns: ProColumns<API.ResponseCodes>[] = [
+    {
+      title: '响应状态码',
+      dataIndex: 'errorCode',
+      tooltip: '响应状态码',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入响应状态码',
+          },
+        ],
+      },
+    },
+    {
+      title: '状态码信息',
+      dataIndex: 'errorMessage',
+      ellipsis: true,
+      tooltip: '状态码信息',
+    },
+    {
+      title: '解释帮助',
+      dataIndex: 'explanationHelp',
+      ellipsis: true,
+      tooltip: '解释帮助',
+    },
+    {
+      title: '是否成功码',
+      dataIndex: 'success',
+      valueType: 'select',
+      valueEnum: generateValueEnum(YesNoEnum),
+      tooltip: '是否成功码',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入是否成功码',
+          },
+        ],
+      },
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      width: 200,
+      render: (text, record, _, action) => [
+        <a
+          key="editable"
+          onClick={() => {
+            action?.startEditable?.(record.key);
+          }}
+        >
+          编辑
+        </a>,
+        <a
+          key="delete"
+          onClick={() => {
+            const responseCodesDataSource = formRef.current?.getFieldValue(
+              'responseParam',
+            ) as API.ResponseParam[];
+            formRef.current?.setFieldsValue({
+              responseCodes: responseCodesDataSource.filter((item) => item.key !== record?.key),
+            });
+          }}
+        >
+          删除
+        </a>,
+      ],
+    },
+  ];
+
   const pricingColumns: ProColumns<API.Pricing>[] = [
     {
       title: '免费接口调用次数',
       dataIndex: 'freeApiCount',
       tooltip: '免费接口调用次数',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入免费接口调用次数',
+          },
+        ],
+      },
     },
     {
       title: '每日接口最大调用次数',
       dataIndex: 'dailyQuota',
       tooltip: '每日接口最大调用次数',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入每日接口最大调用次数',
+          },
+        ],
+      },
     },
     {
       title: '价格',
       dataIndex: 'price',
       tooltip: '价格',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入价格',
+          },
+        ],
+      },
     },
     {
       title: '描述信息',
@@ -242,6 +397,8 @@ const InitializeForm: React.FC = () => {
 
   const [testRequestParam, setTestRequestParam] = useState<API.RequestParam[]>([]);
 
+  const testRequestParamRef = useRef<API.RequestParam[]>();
+
   const testRequestParamColumns: ProColumns<API.RequestParam>[] = [
     {
       title: '参数名称',
@@ -277,6 +434,7 @@ const InitializeForm: React.FC = () => {
         <a
           key="editable"
           onClick={() => {
+            console.log(record)
             action?.startEditable?.(record.key);
           }}
         >
@@ -285,13 +443,13 @@ const InitializeForm: React.FC = () => {
         <a
           key="delete"
           onClick={() => {
-            if (record.required) {
-              console.log(checkByValue(YesNoEnum, 'YES', record.required))
-            }
             if (record.required && checkByValue(YesNoEnum, 'YES', record.required)) {
               message.warning('参数必填，不能删除').then();
             } else {
-              setTestRequestParam(testRequestParam.filter((item) => item.key !== record?.key));
+              let requestParams = testRequestParam.filter((item) => item.key !== record?.key);
+              setTestRequestParam(requestParams);
+              console.log(requestParams)
+              testRequestParamRef.current = requestParams;
               action?.reload();
             }
           }}
@@ -331,9 +489,22 @@ const InitializeForm: React.FC = () => {
             name="base"
             title="基础信息"
             onFinish={(value) => {
-              setFirstStepData(value as API.ApiInfo);
-              testRequestParamActionRef.current?.reload();
-              return Promise.resolve(true);
+              let apiInfo = value as API.ApiInfo;
+              const hasSuccessCode =
+                apiInfo.responseCodes && apiInfo.responseCodes.length > 0
+                  ? apiInfo.responseCodes.some((item) => parseInt(String(item.success)) === 1)
+                  : false;
+              if (hasSuccessCode) {
+                setFirstStepData(apiInfo);
+                let deepCopyApiInfo = JSON.parse(JSON.stringify(apiInfo?.requestParam));
+                setTestRequestParam(deepCopyApiInfo);
+                testRequestParamRef.current = deepCopyApiInfo;
+                testRequestParamActionRef.current?.reload();
+                return Promise.resolve(true);
+              } else {
+                message.warning('必须填写成功状态码').then();
+                return Promise.resolve(false);
+              }
             }}
           >
             <ProCard
@@ -474,6 +645,37 @@ const InitializeForm: React.FC = () => {
             </ProCard>
 
             <ProCard
+              title="响应码"
+              bordered
+              headerBordered
+              collapsible
+              style={{
+                marginBlockEnd: 16,
+                minWidth: 800,
+                maxWidth: '100%',
+              }}
+            >
+              <EditableProTable<API.ResponseCodes>
+                name="responseCodes"
+                rowKey="key"
+                scroll={{ x: '16.6%' }}
+                loading={false}
+                columns={responseCodesColumns}
+                recordCreatorProps={{
+                  newRecordType: 'dataSource',
+                  record: {
+                    key: nanoid(),
+                  },
+                }}
+                editable={{
+                  type: 'multiple',
+                  editableKeys: responseCodesEditableKeys,
+                  onChange: setResponseCodesEditableRowKeys,
+                }}
+              />
+            </ProCard>
+
+            <ProCard
               title="接口价格"
               bordered
               headerBordered
@@ -543,12 +745,8 @@ const InitializeForm: React.FC = () => {
                         }}
                         columns={testRequestParamColumns}
                         request={async () => {
-                          const deepCopyRequestParam = firstStepData?.requestParam
-                            ? JSON.parse(JSON.stringify(firstStepData?.requestParam))
-                            : [];
-                          setTestRequestParam(deepCopyRequestParam);
                           return {
-                            data: testRequestParam && testRequestParam.length > 0 ? testRequestParam : deepCopyRequestParam,
+                            data: testRequestParamRef.current,
                             success: true,
                           };
                         }}

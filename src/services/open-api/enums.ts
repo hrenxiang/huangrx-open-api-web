@@ -1,3 +1,5 @@
+import {ProSchemaValueEnumObj} from "@ant-design/pro-components";
+
 /**
  * 将 Map 转换为对象数组
  * @param {Map<string, [number, string, string]>} map 输入的 Map 对象
@@ -41,7 +43,7 @@ export function getDescByValue<V extends [number, string, string]>(
 export function checkByValue(
   enumMap: Map<string, [number, string, string]>,
   enumKey: string,
-  value: number,
+  value: any,
 ): boolean {
   // 检查枚举键是否存在于枚举 Map 中
   if (!enumMap.has(enumKey)) {
@@ -52,8 +54,18 @@ export function checkByValue(
   const enumValue = enumMap.get(enumKey);
 
   // 比较枚举值和给定值是否相等，并返回结果
-  return enumValue![0] === parseInt(String(value));
+  return enumValue![0] == value;
 }
+
+// 公共方法，接受一个枚举对象并返回对应的 valueEnumObj
+export function generateValueEnum<T> (enumObject: Map<string, [T, string, string]>): ProSchemaValueEnumObj {
+  const array = mapToArray<T>(enumObject);
+  const valueEnumObj: ProSchemaValueEnumObj = {};
+  array.forEach((item) => {
+    valueEnumObj[String(item.value)] = { text: item.label };
+  });
+  return valueEnumObj;
+};
 
 /**
  * API 状态枚举
@@ -84,4 +96,15 @@ export const HttpMethodEnum = new Map<string, [string, string, string]>([
 export const YesNoEnum = new Map<string, [number, string, string]>([
   ['YES', [1, '是', 'extra']],
   ['NO', [0, '否', 'extra']],
+]);
+
+/**
+ * 字段类型 枚举
+ */
+export const FieldTypeEnum = new Map<string, [number, string, string]>([
+  ['string', [0, 'string', 'extra']],
+  ['integer', [1, 'integer', 'extra']],
+  ['number', [2, 'number', 'extra']],
+  ['boolean', [3, 'boolean', 'extra']],
+  ['array', [4, 'array', 'extra']],
 ]);
