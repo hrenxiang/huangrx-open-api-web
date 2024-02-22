@@ -319,4 +319,12 @@ declare namespace API {
     type?: string;
     currentAuthority?: string;
   };
+
+  type ApiTestRequest = {
+    method: string;
+    url: string;
+    authRequired: number;
+    requestParam: RequestParam[];
+    responseCodes: ResponseCodes[];
+  };
 }

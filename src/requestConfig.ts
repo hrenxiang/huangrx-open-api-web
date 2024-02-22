@@ -114,9 +114,17 @@ export const requestConfig: RequestConfig = {
   responseInterceptors: [
     (response) => {
       // 拦截响应数据，进行个性化处理
+      console.log(response,"====res")
       const { data } = response as unknown as ResponseStructure;
-      data.success = data.code === 0;
-      return response;
+      if (!data) {
+        return response;
+      }
+      if (response.config.url === '/test') {
+        return response;
+      } else {
+        data.success = data.code === 0;
+        return response;
+      }
     },
   ],
 };

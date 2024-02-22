@@ -24,6 +24,7 @@ import {
 } from '@/services/open-api/enums';
 import './initialize.less';
 import ReactJson from 'react-json-view';
+import { testApi } from '@/services/open-api/ApiTestController';
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -434,7 +435,7 @@ const InitializeForm: React.FC = () => {
         <a
           key="editable"
           onClick={() => {
-            console.log(record)
+            console.log(record);
             action?.startEditable?.(record.key);
           }}
         >
@@ -448,7 +449,7 @@ const InitializeForm: React.FC = () => {
             } else {
               let requestParams = testRequestParam.filter((item) => item.key !== record?.key);
               setTestRequestParam(requestParams);
-              console.log(requestParams)
+              console.log(requestParams);
               testRequestParamRef.current = requestParams;
               action?.reload();
             }
@@ -463,10 +464,25 @@ const InitializeForm: React.FC = () => {
   const [testResponseBody, setTestResponseBody] = useState({});
 
   const handleSend = () => {
-    console.log(firstStepData, '=====');
-    console.log(testRequestParam, '======');
-    const result = { name: 'huangrx' };
-    setTestResponseBody(result);
+    let method = firstStepData?.method;
+    let url = firstStepData?.url;
+    let authRequired = firstStepData?.authRequired;
+    let responseCodes = firstStepData?.responseCodes;
+
+    if (method && url && authRequired) {
+      const apiTestRequest: API.ApiTestRequest = {
+        method: method,
+        url: url,
+        authRequired: authRequired,
+        requestParam: testRequestParam,
+        responseCodes: responseCodes ? responseCodes : [],
+      };
+
+      testApi(apiTestRequest).then((res) => {
+        console.log(res, '=====res');
+        setTestResponseBody(res);
+      });
+    }
   };
 
   return (
@@ -490,21 +506,14 @@ const InitializeForm: React.FC = () => {
             title="基础信息"
             onFinish={(value) => {
               let apiInfo = value as API.ApiInfo;
-              const hasSuccessCode =
-                apiInfo.responseCodes && apiInfo.responseCodes.length > 0
-                  ? apiInfo.responseCodes.some((item) => parseInt(String(item.success)) === 1)
-                  : false;
-              if (hasSuccessCode) {
-                setFirstStepData(apiInfo);
+              setFirstStepData(apiInfo);
+              if (apiInfo?.requestParam && apiInfo?.requestParam.length > 0) {
                 let deepCopyApiInfo = JSON.parse(JSON.stringify(apiInfo?.requestParam));
                 setTestRequestParam(deepCopyApiInfo);
                 testRequestParamRef.current = deepCopyApiInfo;
-                testRequestParamActionRef.current?.reload();
-                return Promise.resolve(true);
-              } else {
-                message.warning('必须填写成功状态码').then();
-                return Promise.resolve(false);
               }
+              testRequestParamActionRef.current?.reload();
+              return Promise.resolve(true);
             }}
           >
             <ProCard
