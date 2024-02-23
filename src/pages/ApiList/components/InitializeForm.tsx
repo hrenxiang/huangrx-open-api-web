@@ -29,14 +29,6 @@ import { testApi } from '@/services/open-api/ApiTestController';
 import thirdImage from '@/assets/image/png/registration-successful.png';
 import {useModel} from "@@/exports";
 
-const waitTime = (time: number = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
-
 const InitializeForm: React.FC = () => {
   const { initialState } = useModel('@@initialState');
 
