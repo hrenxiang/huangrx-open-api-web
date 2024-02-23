@@ -5,13 +5,14 @@ import {
   PageContainer,
   ProCard,
   ProColumns,
+  ProForm,
   ProFormInstance,
   ProFormSelect,
-  ProFormText,
+  ProFormText, ProFormTextArea,
   ProTable,
   StepsForm,
 } from '@ant-design/pro-components';
-import { Button, Input, Menu, MenuProps, message, Space } from 'antd';
+import {Button, Image, Input, Menu, MenuProps, message, Space} from 'antd';
 import React, { useRef, useState } from 'react';
 import {
   ApiStatusEnum,
@@ -25,6 +26,8 @@ import {
 import './initialize.less';
 import ReactJson from 'react-json-view';
 import { testApi } from '@/services/open-api/ApiTestController';
+import thirdImage from '@/assets/image/png/registration-successful.png';
+import {useModel} from "@@/exports";
 
 const waitTime = (time: number = 100) => {
   return new Promise((resolve) => {
@@ -35,6 +38,8 @@ const waitTime = (time: number = 100) => {
 };
 
 const InitializeForm: React.FC = () => {
+  const { initialState } = useModel('@@initialState');
+
   const [firstStepData, setFirstStepData] = useState<API.ApiInfo>();
 
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
@@ -479,7 +484,7 @@ const InitializeForm: React.FC = () => {
       };
 
       testApi(apiTestRequest).then((res) => {
-        console.log(res, '=====res');
+        console.log(123)
         setTestResponseBody(res);
       });
     }
@@ -489,17 +494,37 @@ const InitializeForm: React.FC = () => {
     <PageContainer>
       <ProCard boxShadow>
         <StepsForm
-          onFinish={async (values) => {
-            console.log(values);
-            await waitTime(1000);
-            message.success('提交成功');
-          }}
-          formProps={{
-            validateMessages: {
-              required: '此项为必填项',
-            },
+          containerStyle={{
+            width: '100%',
+            maxWidth: '960px'
           }}
           formRef={formRef}
+          submitter={{
+            render: (props) => {
+              if (props.step === 0) {
+                return (
+                  <Button type="primary" onClick={() => props.onSubmit?.()}>
+                    下一步
+                  </Button>
+                );
+              }
+
+              if (props.step === 1) {
+                return [
+                  <Button key="pre" onClick={() => props.onPre?.()}>
+                    上一步
+                  </Button>,
+                  <Button
+                    type="primary"
+                    key="goToTree"
+                    onClick={() => props.onSubmit?.()}
+                  >
+                    提交申请
+                  </Button>,
+                ];
+              }
+            },
+          }}
         >
           <StepsForm.StepForm
             name="base"
@@ -527,66 +552,76 @@ const InitializeForm: React.FC = () => {
                 maxWidth: '100%',
               }}
             >
-              <ProFormText
-                name="name"
-                width="md"
-                label="接口名称"
-                tooltip="最长为 10 位，用于标定接口名称"
-                placeholder="请输入名称"
-                rules={[{ required: true }, { max: 10, message: '接口名称不能超过10个字符' }]}
-              />
+              <ProForm.Group>
+                <ProFormText
+                  name="name"
+                  width="md"
+                  label="接口名称"
+                  tooltip="最长为 10 位，用于标定接口名称"
+                  placeholder="请输入名称"
+                  rules={[{ required: true }, { max: 10, message: '接口名称不能超过10个字符' }]}
+                />
+                <ProFormSelect
+                  options={mapToArray<number>(ApiStatusEnum)}
+                  width="md"
+                  name="status"
+                  label="接口状态"
+                  tooltip="添加完成后是否生效"
+                  rules={[{ required: true }]}
+                />
+              </ProForm.Group>
 
-              <ProFormText
+              <ProForm.Group>
+                <ProFormSelect
+                  options={mapToArray<string>(HttpMethodEnum)}
+                  width="md"
+                  name="method"
+                  label="请求方法"
+                  tooltip="请选择您要使用的请求方法。GET 用于获取数据，POST 用于发送数据，DELETE 用于删除数据，等等。"
+                  rules={[{ required: true }]}
+                />
+                <ProFormText
+                  name="url"
+                  width="md"
+                  label="请求地址"
+                  tooltip="请输入您要发送请求的地址，例如：https://example.com/api。"
+                  placeholder="请输入请求地址"
+                  rules={[{ required: true }]}
+                />
+              </ProForm.Group>
+
+              <ProForm.Group>
+                <ProFormText
+                  name="rateLimit"
+                  width="md"
+                  label="调用频率限制"
+                  tooltip="请输入您的 API 调用频率限制，例如：1000 次/分钟。"
+                  placeholder="请输入请求地址"
+                  rules={[{ required: true }]}
+                />
+
+                <ProFormSelect
+                  options={mapToArray<number>(YesNoEnum)}
+                  width="md"
+                  name="authRequired"
+                  label="是否需要认证"
+                  tooltip="请选择是否需要在请求中使用身份验证。如果需要身份验证，请输入 '是'；如果不需要身份验证，请输入 '否'。"
+                  rules={[{ required: true }]}
+                />
+              </ProForm.Group>
+
+              <ProFormTextArea
                 name="description"
-                width="md"
+                width='lg'
+                fieldProps={{
+                  maxLength: 500,
+                  style: {
+                    minHeight: '150px'
+                  }
+                }}
                 label="接口描述"
                 tooltip="这是一个用于描述接口的字段，请输入接口的详细描述信息"
                 placeholder="请输入接口描述"
-                rules={[{ required: true }]}
-              />
-
-              <ProFormSelect
-                options={mapToArray<number>(ApiStatusEnum)}
-                width="md"
-                name="status"
-                label="接口状态"
-                tooltip="添加完成后是否生效"
-                rules={[{ required: true }]}
-              />
-
-              <ProFormSelect
-                options={mapToArray<string>(HttpMethodEnum)}
-                width="md"
-                name="method"
-                label="请求方法"
-                tooltip="请选择您要使用的请求方法。GET 用于获取数据，POST 用于发送数据，DELETE 用于删除数据，等等。"
-                rules={[{ required: true }]}
-              />
-
-              <ProFormText
-                name="url"
-                width="md"
-                label="请求地址"
-                tooltip="请输入您要发送请求的地址，例如：https://example.com/api。"
-                placeholder="请输入请求地址"
-                rules={[{ required: true }]}
-              />
-
-              <ProFormText
-                name="rateLimit"
-                width="md"
-                label="调用频率限制"
-                tooltip="请输入您的 API 调用频率限制，例如：1000 次/分钟。"
-                placeholder="请输入请求地址"
-                rules={[{ required: true }]}
-              />
-
-              <ProFormSelect
-                options={mapToArray<number>(YesNoEnum)}
-                width="md"
-                name="authRequired"
-                label="是否需要认证"
-                tooltip="请选择是否需要在请求中使用身份验证。如果需要身份验证，请输入 '是'；如果不需要身份验证，请输入 '否'。"
                 rules={[{ required: true }]}
               />
             </ProCard>
@@ -716,7 +751,11 @@ const InitializeForm: React.FC = () => {
             </ProCard>
           </StepsForm.StepForm>
 
-          <StepsForm.StepForm name="test" title="接口测试">
+          <StepsForm.StepForm
+            name="test"
+            className="second-step"
+            title="接口测试"
+          >
             <Space className="second-step-header">
               <Input
                 addonBefore={firstStepData?.method}
@@ -725,11 +764,12 @@ const InitializeForm: React.FC = () => {
                 placeholder="牏入 http 或 https 起始的完整 URL"
                 readOnly
               />
-              <Button onClick={handleSend}>发送</Button>
+              <Button className="second-step-header_button" onClick={handleSend}>发送</Button>
             </Space>
 
             <Space className="second-step-param">
               <Menu
+                style={{marginBottom: '16px'}}
                 onClick={onClick}
                 selectedKeys={[current]}
                 mode="horizontal"
@@ -739,7 +779,6 @@ const InitializeForm: React.FC = () => {
                 {current === 'param' ? (
                   <Space className="second-step-param_param">
                     <ProCard>
-                      <p className="second-step-param_text">Query参数</p>
                       <ProTable<API.RequestParam>
                         actionRef={testRequestParamActionRef}
                         name="testRequestParam"
@@ -763,10 +802,28 @@ const InitializeForm: React.FC = () => {
                     </ProCard>
                   </Space>
                 ) : current === 'body' ? (
-                  <Space className="second-step-param_body">body</Space>
+                  <Space className="second-step-param_body">
+                    <ReactJson
+                      style={{
+                        padding: '14px',
+                        borderRadius: '5px',
+                        fontFamily: 'HannotateSC-W5',
+                        border: '1px solid black',
+                        tableLayout: "fixed",
+                        width: '100%'
+                      }}
+                      src={testResponseBody}
+                      theme="bright:inverted"
+                      iconStyle="circle"
+                      onEdit={(value) => {
+                        // 定义一个updateSrc state 接收这个参数，发送时传给后端
+                        console.log(value)
+                      }}
+                    />
+                  </Space>
                 ) : current === 'headers' ? (
                   <Space className="second-step-param_headers">
-                    <p>Headers</p>
+                    Headers
                   </Space>
                 ) : current === 'cookies' ? (
                   <Space className="second-step-param_cookies">cookies</Space>
@@ -790,6 +847,9 @@ const InitializeForm: React.FC = () => {
                     src={testResponseBody}
                     theme="ocean"
                     iconStyle="circle"
+                    onEdit={(value) => {
+                      console.log(value, "===")
+                    }}
                   />
                 </ProCard>
               </Space>
@@ -797,13 +857,23 @@ const InitializeForm: React.FC = () => {
           </StepsForm.StepForm>
 
           <StepsForm.StepForm name="time" title="上传结果">
-            <ProCard
-              style={{
-                marginBlockEnd: 16,
-                minWidth: 800,
-                maxWidth: '100%',
-              }}
-            ></ProCard>
+              <div style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '20px',
+                marginTop: '100px',
+                marginBottom: '100px'
+              }}>
+                <Image
+                  width={200}
+                  preview={false}
+                  src={thirdImage}
+                />
+                <p>已收到您的登记申请，登记完成后将发送短信通知至{initialState?.loginUser?.user?.userInfo?.phoneNumber}</p>
+              </div>
           </StepsForm.StepForm>
         </StepsForm>
       </ProCard>

@@ -3,16 +3,19 @@
 }
 
 .second-step-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 9fr 1fr;
   height: 30px;
   margin-bottom: 16px;
+  gap: 20px;
 }
 
 .second-step-header_input {
-  min-width: 860px;
+  width: 100%;
+}
+
+.second-step-header_button {
+  float: right;
 }
 
 .second-step-param {
@@ -47,4 +50,8 @@
       padding: 0;
     }
   }
+}
+
+.second-step-param_body {
+  width: 100%;
 }
