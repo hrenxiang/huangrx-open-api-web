@@ -22,10 +22,6 @@ const Index: React.FC = () => {
             </Link>
           </div>
         </div>
-
-        <div className="index-header-wave__container">
-          <div className="index-header-wave"></div>
-        </div>
       </div>
 
       <div className="index-first-part">123</div>
