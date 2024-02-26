@@ -13,6 +13,7 @@ export default [
     path: '/welcome',
     icon: 'smile',
     name: '欢迎',
+    // access: 'canNormal',
     component: './Welcome',
   },
   {
@@ -20,7 +21,7 @@ export default [
     icon: 'crown',
     layout: false,
     hideChildrenInMenu: true,
-    name: '管理页',
+    name: '门户',
     routes: [
       {
         path: '/index',

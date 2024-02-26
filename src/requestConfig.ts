@@ -13,8 +13,6 @@ interface ResponseStructure {
   success?: boolean;
 }
 
-const LoginPath = '/login';
-
 /**
  * pro 自带的错误处理， 可以在这里做自己的改动
  * @doc https://umijs.org/docs/max/request#配置
@@ -36,22 +34,24 @@ export const requestConfig: RequestConfig = {
     },
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
-      console.log(error, '====errorHandler');
       if (opts?.skipErrorHandler) throw error;
       // 我们的 errorThrower 抛出的错误。
       if (error.name === 'BizError') {
         const errorInfo: ResponseStructure | undefined = error.info;
         if (errorInfo) {
           message.error(errorInfo.message).then();
+          return;
         }
       } else if (error.request) {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
         // 而在node.js中是 http.ClientRequest 的实例
         message.error('服务器无响应，请重试！').then();
+        return;
       } else {
         // 发送请求时出了点问题
         message.error('请求错误，请重试！').then();
+        return;
       }
     },
   },
@@ -91,7 +91,6 @@ export const requestConfig: RequestConfig = {
                   }
                 })
                 .catch(() => {
-                  message.error('请重新登录！').then();
                   history.push('/user/login');
                 });
             } else {
@@ -100,7 +99,8 @@ export const requestConfig: RequestConfig = {
             }
           }
         } else {
-          message.error('Authorization Token格式错误！').then();
+          localStorage.removeItem('OPEN-API-TOKEN');
+          localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
         }
       } else {
         localStorage.removeItem('OPEN-API-TOKEN');
@@ -114,7 +114,6 @@ export const requestConfig: RequestConfig = {
   responseInterceptors: [
     (response) => {
       // 拦截响应数据，进行个性化处理
-      console.log(response,"====res")
       const { data } = response as unknown as ResponseStructure;
       if (!data) {
         return response;

@@ -8,11 +8,12 @@ import {
   ProForm,
   ProFormInstance,
   ProFormSelect,
-  ProFormText, ProFormTextArea,
+  ProFormText,
+  ProFormTextArea,
   ProTable,
   StepsForm,
 } from '@ant-design/pro-components';
-import {Button, Image, Input, Menu, MenuProps, message, Space} from 'antd';
+import { Button, Image, Input, Menu, MenuProps, message, Space } from 'antd';
 import React, { useRef, useState } from 'react';
 import {
   ApiStatusEnum,
@@ -27,14 +28,19 @@ import './initialize.less';
 import ReactJson from 'react-json-view';
 import { testApi } from '@/services/open-api/ApiTestController';
 import thirdImage from '@/assets/image/png/registration-successful.png';
-import {useModel} from "@@/exports";
+import { useModel } from '@@/exports';
+import { maskPhoneNumber } from '@/services/open-api/utils';
 
 const InitializeForm: React.FC = () => {
   const { initialState } = useModel('@@initialState');
 
   const [firstStepData, setFirstStepData] = useState<API.ApiInfo>();
 
+  const [requestHeaderEditableKeys, setRequestHeaderEditableRowKeys] = useState<React.Key[]>([]);
+
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
+
+  const [requestBodyEditableKeys, setRequestBodyEditableKeys] = useState<React.Key[]>([]);
 
   const [responseEditableKeys, setResponseEditableRowKeys] = useState<React.Key[]>([]);
 
@@ -43,6 +49,86 @@ const InitializeForm: React.FC = () => {
   const [pricingEditableKeys, setPricingEditableRowKeys] = useState<React.Key[]>([]);
 
   const formRef = useRef<ProFormInstance>();
+
+  const requestHeaderColumns: ProColumns<API.RequestHeader>[] = [
+    {
+      title: '参数名称',
+      dataIndex: 'paramKey',
+      ellipsis: true,
+      tooltip: '参数名称',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入参数名称',
+          },
+        ],
+      },
+    },
+    {
+      title: '示例值',
+      dataIndex: 'paramValue',
+      ellipsis: true,
+      tooltip: '示例值',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入示例值',
+          },
+        ],
+      },
+    },
+    {
+      title: '参数类型',
+      dataIndex: 'paramType',
+      valueType: 'select',
+      valueEnum: generateValueEnum(FieldTypeEnum),
+      tooltip: '参数类型',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入参数类型',
+          },
+        ],
+      },
+    },
+    {
+      title: '描述信息',
+      dataIndex: 'description',
+      ellipsis: true,
+      tooltip: '描述信息',
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      width: 200,
+      render: (text, record, _, action) => [
+        <a
+          key="editable"
+          onClick={() => {
+            action?.startEditable?.(record.key);
+          }}
+        >
+          编辑
+        </a>,
+        <a
+          key="delete"
+          onClick={() => {
+            const requestParamDataSource = formRef.current?.getFieldValue(
+              'requestHeader',
+            ) as API.RequestParam[];
+            formRef.current?.setFieldsValue({
+              requestHeader: requestParamDataSource.filter((item) => item.key !== record?.key),
+            });
+          }}
+        >
+          删除
+        </a>,
+      ],
+    },
+  ];
 
   const requestParamColumns: ProColumns<API.RequestParam>[] = [
     {
@@ -122,6 +208,100 @@ const InitializeForm: React.FC = () => {
             ) as API.RequestParam[];
             formRef.current?.setFieldsValue({
               requestParam: requestParamDataSource.filter((item) => item.key !== record?.key),
+            });
+          }}
+        >
+          删除
+        </a>,
+      ],
+    },
+  ];
+
+  const requestBodyColumns: ProColumns<API.RequestBody>[] = [
+    {
+      title: '参数名称',
+      dataIndex: 'paramKey',
+      ellipsis: true,
+      tooltip: '参数名称',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入参数名称',
+          },
+        ],
+      },
+    },
+    {
+      title: '示例值',
+      dataIndex: 'paramValue',
+      ellipsis: true,
+      tooltip: '示例值',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入示例值',
+          },
+        ],
+      },
+    },
+    {
+      title: '参数类型',
+      dataIndex: 'paramType',
+      valueType: 'select',
+      valueEnum: generateValueEnum(FieldTypeEnum),
+      tooltip: '参数类型',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入参数类型',
+          },
+        ],
+      },
+    },
+    {
+      title: '能否为空',
+      dataIndex: 'isNull',
+      ellipsis: true,
+      tooltip: '示例值',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: '请输入能否为空',
+          },
+        ],
+      },
+    },
+    {
+      title: '描述信息',
+      dataIndex: 'description',
+      ellipsis: true,
+      tooltip: '描述信息',
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      width: 200,
+      render: (text, record, _, action) => [
+        <a
+          key="editable"
+          onClick={() => {
+            action?.startEditable?.(record.key);
+          }}
+        >
+          编辑
+        </a>,
+        <a
+          key="delete"
+          onClick={() => {
+            const requestParamDataSource = formRef.current?.getFieldValue(
+              'requestBody',
+            ) as API.RequestParam[];
+            formRef.current?.setFieldsValue({
+              requestBody: requestParamDataSource.filter((item) => item.key !== record?.key),
             });
           }}
         >
@@ -387,7 +567,6 @@ const InitializeForm: React.FC = () => {
   const [current, setCurrent] = useState('param');
 
   const onClick: MenuProps['onClick'] = (e) => {
-    console.log('click ', e);
     setCurrent(e.key);
   };
 
@@ -458,6 +637,69 @@ const InitializeForm: React.FC = () => {
     },
   ];
 
+  const testRequestHeaderActionRef = useRef<ActionType>();
+
+  const [testRequestHeader, setTestRequestHeader] = useState<API.RequestHeader[]>([]);
+
+  const testRequestHeaderRef = useRef<API.RequestHeader[]>();
+
+  const testRequestHeaderColumns: ProColumns<API.RequestHeader>[] = [
+    {
+      title: '参数名称',
+      dataIndex: 'paramKey',
+      ellipsis: true,
+      editable: false,
+      tooltip: '参数名称',
+    },
+    {
+      title: '示例值',
+      dataIndex: 'paramValue',
+      ellipsis: true,
+      tooltip: '示例值',
+    },
+    {
+      title: '参数类型',
+      dataIndex: 'paramType',
+      editable: false,
+      tooltip: '参数类型',
+    },
+    {
+      title: '描述信息',
+      dataIndex: 'description',
+      ellipsis: true,
+      editable: false,
+      tooltip: '描述信息',
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      width: 200,
+      render: (text, record, _, action) => [
+        <a
+          key="editable"
+          onClick={() => {
+            console.log(record);
+            action?.startEditable?.(record.key);
+          }}
+        >
+          编辑
+        </a>,
+        <a
+          key="delete"
+          onClick={() => {
+            let requestHeader = testRequestHeader.filter((item) => item.key !== record?.key);
+            setTestRequestHeader(requestHeader);
+            console.log(requestHeader);
+            testRequestParamRef.current = requestHeader;
+            action?.reload();
+          }}
+        >
+          删除
+        </a>,
+      ],
+    },
+  ];
+
   const [testResponseBody, setTestResponseBody] = useState({});
 
   const handleSend = () => {
@@ -476,7 +718,6 @@ const InitializeForm: React.FC = () => {
       };
 
       testApi(apiTestRequest).then((res) => {
-        console.log(123)
         setTestResponseBody(res);
       });
     }
@@ -488,7 +729,7 @@ const InitializeForm: React.FC = () => {
         <StepsForm
           containerStyle={{
             width: '100%',
-            maxWidth: '960px'
+            maxWidth: '960px',
           }}
           formRef={formRef}
           submitter={{
@@ -509,7 +750,9 @@ const InitializeForm: React.FC = () => {
                   <Button
                     type="primary"
                     key="goToTree"
-                    onClick={() => props.onSubmit?.()}
+                    onClick={() => {
+                      props.onSubmit?.();
+                    }}
                   >
                     提交申请
                   </Button>,
@@ -604,12 +847,12 @@ const InitializeForm: React.FC = () => {
 
               <ProFormTextArea
                 name="description"
-                width='lg'
+                width="lg"
                 fieldProps={{
                   maxLength: 500,
                   style: {
-                    minHeight: '150px'
-                  }
+                    minHeight: '150px',
+                  },
                 }}
                 label="接口描述"
                 tooltip="这是一个用于描述接口的字段，请输入接口的详细描述信息"
@@ -619,10 +862,43 @@ const InitializeForm: React.FC = () => {
             </ProCard>
 
             <ProCard
+              title="请求头"
+              bordered
+              headerBordered
+              collapsible
+              defaultCollapsed={true}
+              style={{
+                marginBlockEnd: 16,
+                minWidth: 800,
+                maxWidth: '100%',
+              }}
+            >
+              <EditableProTable<API.RequestHeader>
+                name="requestHeader"
+                rowKey="key"
+                scroll={{ x: '16.6%' }}
+                loading={false}
+                columns={requestHeaderColumns}
+                recordCreatorProps={{
+                  newRecordType: 'dataSource',
+                  record: {
+                    key: nanoid(),
+                  },
+                }}
+                editable={{
+                  type: 'multiple',
+                  editableKeys: requestHeaderEditableKeys,
+                  onChange: setRequestHeaderEditableRowKeys,
+                }}
+              />
+            </ProCard>
+
+            <ProCard
               title="请求参数"
               bordered
               headerBordered
               collapsible
+              defaultCollapsed={true}
               style={{
                 marginBlockEnd: 16,
                 minWidth: 800,
@@ -650,10 +926,43 @@ const InitializeForm: React.FC = () => {
             </ProCard>
 
             <ProCard
+              title="请求体"
+              bordered
+              headerBordered
+              collapsible
+              defaultCollapsed={true}
+              style={{
+                marginBlockEnd: 16,
+                minWidth: 800,
+                maxWidth: '100%',
+              }}
+            >
+              <EditableProTable<API.RequestBody>
+                name="requestBody"
+                rowKey="key"
+                scroll={{ x: '16.6%' }}
+                loading={false}
+                columns={requestBodyColumns}
+                recordCreatorProps={{
+                  newRecordType: 'dataSource',
+                  record: {
+                    key: nanoid(),
+                  },
+                }}
+                editable={{
+                  type: 'multiple',
+                  editableKeys: requestBodyEditableKeys,
+                  onChange: setRequestBodyEditableKeys,
+                }}
+              />
+            </ProCard>
+
+            <ProCard
               title="返回参数"
               bordered
               headerBordered
               collapsible
+              defaultCollapsed={true}
               style={{
                 marginBlockEnd: 16,
                 minWidth: 800,
@@ -685,6 +994,7 @@ const InitializeForm: React.FC = () => {
               bordered
               headerBordered
               collapsible
+              defaultCollapsed={true}
               style={{
                 marginBlockEnd: 16,
                 minWidth: 800,
@@ -716,6 +1026,7 @@ const InitializeForm: React.FC = () => {
               bordered
               headerBordered
               collapsible
+              defaultCollapsed={true}
               style={{
                 marginBlockEnd: 16,
                 minWidth: 800,
@@ -747,6 +1058,10 @@ const InitializeForm: React.FC = () => {
             name="test"
             className="second-step"
             title="接口测试"
+            onFinish={() => {
+              console.log(firstStepData, '====value');
+              return Promise.resolve(true);
+            }}
           >
             <Space className="second-step-header">
               <Input
@@ -756,12 +1071,14 @@ const InitializeForm: React.FC = () => {
                 placeholder="牏入 http 或 https 起始的完整 URL"
                 readOnly
               />
-              <Button className="second-step-header_button" onClick={handleSend}>发送</Button>
+              <Button className="second-step-header_button" onClick={handleSend}>
+                发送
+              </Button>
             </Space>
 
             <Space className="second-step-param">
               <Menu
-                style={{marginBottom: '16px'}}
+                style={{ marginBottom: '16px' }}
                 onClick={onClick}
                 selectedKeys={[current]}
                 mode="horizontal"
@@ -801,24 +1118,43 @@ const InitializeForm: React.FC = () => {
                         borderRadius: '5px',
                         fontFamily: 'HannotateSC-W5',
                         border: '1px solid black',
-                        tableLayout: "fixed",
-                        width: '100%'
+                        tableLayout: 'fixed',
+                        width: '100%',
                       }}
                       src={testResponseBody}
                       theme="bright:inverted"
                       iconStyle="circle"
                       onEdit={(value) => {
                         // 定义一个updateSrc state 接收这个参数，发送时传给后端
-                        console.log(value)
+                        console.log(value);
                       }}
                     />
                   </Space>
                 ) : current === 'headers' ? (
                   <Space className="second-step-param_headers">
-                    Headers
+                    <ProCard>
+                      <ProTable<API.RequestHeader>
+                        actionRef={testRequestHeaderActionRef}
+                        name="testRequestHeader"
+                        rowKey="key"
+                        search={false}
+                        options={false}
+                        loading={false}
+                        bordered={true}
+                        pagination={false}
+                        style={{
+                          width: '100%',
+                        }}
+                        columns={testRequestHeaderColumns}
+                        request={async () => {
+                          return {
+                            data: testRequestHeaderRef.current,
+                            success: true,
+                          };
+                        }}
+                      />
+                    </ProCard>
                   </Space>
-                ) : current === 'cookies' ? (
-                  <Space className="second-step-param_cookies">cookies</Space>
                 ) : (
                   <Space></Space>
                 )}
@@ -840,7 +1176,7 @@ const InitializeForm: React.FC = () => {
                     theme="ocean"
                     iconStyle="circle"
                     onEdit={(value) => {
-                      console.log(value, "===")
+                      console.log(value, '===');
                     }}
                   />
                 </ProCard>
@@ -849,7 +1185,8 @@ const InitializeForm: React.FC = () => {
           </StepsForm.StepForm>
 
           <StepsForm.StepForm name="time" title="上传结果">
-              <div style={{
+            <div
+              style={{
                 width: '100%',
                 display: 'flex',
                 flexDirection: 'column',
@@ -857,15 +1194,17 @@ const InitializeForm: React.FC = () => {
                 alignItems: 'center',
                 gap: '20px',
                 marginTop: '100px',
-                marginBottom: '100px'
-              }}>
-                <Image
-                  width={200}
-                  preview={false}
-                  src={thirdImage}
-                />
-                <p>已收到您的登记申请，登记完成后将发送短信通知至{initialState?.loginUser?.user?.userInfo?.phoneNumber}</p>
-              </div>
+                marginBottom: '100px',
+              }}
+            >
+              <Image width={200} preview={false} src={thirdImage} />
+              <p>
+                已收到您的登记申请，登记完成后将发送短信通知至
+                {initialState?.loginUser?.user?.userInfo?.phoneNumber
+                  ? maskPhoneNumber(initialState?.loginUser?.user?.userInfo?.phoneNumber)
+                  : ''}
+              </p>
+            </div>
           </StepsForm.StepForm>
         </StepsForm>
       </ProCard>

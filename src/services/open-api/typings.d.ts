@@ -267,6 +267,16 @@ declare namespace API {
     description?: string;
   };
 
+  type RequestHeader = {
+    key: React.Key;
+    id?: number;
+    apiInfoId?: number;
+    paramKey?: string;
+    paramValue?: string;
+    paramType?: number;
+    description?: string;
+  };
+
   type RequestParam = {
     key: React.Key;
     id?: number;
@@ -275,6 +285,18 @@ declare namespace API {
     paramType?: number;
     required?: number;
     exampleValue?: string;
+    description?: string;
+  };
+
+  type RequestBody = {
+    key: React.Key;
+    id?: number;
+    apiInfoId?: number;
+    parentId?: number;
+    paramKey?: string;
+    paramValue?: string;
+    isNull?: number;
+    paramType?: number;
     description?: string;
   };
 
@@ -312,6 +334,8 @@ declare namespace API {
     requestParam: RequestParam[];
     responseParam: ResponseParam[];
     responseCodes: ResponseCodes[];
+    responseHeader: RequestHeader[];
+    responseBody: RequestBody[];
   };
 
   type LoginResult = {
