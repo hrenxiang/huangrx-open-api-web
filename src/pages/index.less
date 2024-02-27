@@ -28,7 +28,7 @@
     font-family: "ChillLongCangKaiShu_Regular", sans-serif;
 
     .index-header-logo {
-      font-size: 21px;
+      font-size: 18px;
       font-weight: 600;
       cursor: pointer;
     }
@@ -46,6 +46,7 @@
       }
 
       .index-header-menu__item {
+        font-size: 15px;
         cursor: pointer;
 
         &:hover {
@@ -55,8 +56,8 @@
 
       .index-header-menu__login {
         border: 1.5px solid black;
-        border-radius: 21px;
-        padding: 14px 21px;
+        border-radius: 18px;
+        padding: 12px 18px;
 
         &:hover {
           background-color: black;
@@ -73,9 +74,19 @@
   flex-direction: column;
   padding: 0 15vw;
 
-  .index-first-part {
+  .index-body-first {
+    display: grid;
+    grid-template-columns: 6fr 2fr;
+    gap: 15px;
     padding-top: 82px;
-    height: 120vh;
-    background-color: white;
+
+    .index-first-part__one {
+      min-width: 480px;
+      min-height: 260px;
+    }
+
+    .index-first-part__two {
+      background-color: pink;
+    }
   }
 }
