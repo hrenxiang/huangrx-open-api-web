@@ -1,0 +1,33 @@
+.draggable {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.draggable-body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.draggable-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: black;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.draggable-circle {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: .5px solid black;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.2s linear; /* 添加过渡效果 */
+}
