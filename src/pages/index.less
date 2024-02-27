@@ -6,6 +6,7 @@
 .index-header-container {
   display: flex;
   flex-direction: column;
+  padding: 0 15vw;
 
   .index-header-content {
     display: flex;
@@ -20,15 +21,16 @@
     /* 模糊半径可以根据需要进行调整 */
     backdrop-filter: blur(10px);
     position: fixed;
-    width: 100vw;
-
-    padding: 15px 48px 15px;
+    width: 70vw;
+    padding: 15px 0 15px;
+    cursor: default;
 
     font-family: "ChillLongCangKaiShu_Regular", sans-serif;
 
     .index-header-logo {
       font-size: 21px;
       font-weight: 600;
+      cursor: pointer;
     }
 
     .index-header-menu {
@@ -66,8 +68,14 @@
   }
 }
 
-.index-first-part {
-  padding-top: 82px;
-  height: 120vh;
-  background-color: white;
+.index-body-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 15vw;
+
+  .index-first-part {
+    padding-top: 82px;
+    height: 120vh;
+    background-color: white;
+  }
 }

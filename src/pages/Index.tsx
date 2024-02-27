@@ -52,7 +52,9 @@ const Index: React.FC = () => {
         </div>
       </div>
 
-      <div className="index-first-part">123</div>
+      <div className="index-body-container">
+        <div className="index-first-part">123</div>
+      </div>
 
       <Draggable x={mousePosition.x} y={mousePosition.y} opacity={mousePosition.opacity} scale={mousePosition.scale}/>
     </div>
