@@ -13,7 +13,7 @@ import { LinkOutlined } from '@ant-design/icons';
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 const indexPath = '/';
-const whiteList = ['/user/login', '/admin/sub-page'];
+const whiteList = ['/user/login', '/index'];
 
 function verifyWhite(location: any) {
   if (whiteList.indexOf(location.pathname) !== -1) {
