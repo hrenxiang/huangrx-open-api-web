@@ -36,20 +36,21 @@ export const requestConfig: RequestConfig = {
     errorHandler: (error: any, opts: any) => {
       if (opts?.skipErrorHandler) throw error;
       // 我们的 errorThrower 抛出的错误。
+      console.log('Error name:', error.name);
       if (error.name === 'BizError') {
-        const errorInfo: ResponseStructure | undefined = error.info;
+        const errorInfo = error.info;
+        console.log('Error info:', errorInfo);
         if (errorInfo) {
+          console.log('Error message:', errorInfo.message);
           message.error(errorInfo.message).then();
           return;
         }
       } else if (error.request) {
-        // 请求已经成功发起，但没有收到响应
-        // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
-        // 而在node.js中是 http.ClientRequest 的实例
-        message.error('服务器无响应，请重试！').then();
+        console.log('Error request:', error.request);
+        message.error('请求错误，请重试！').then();
         return;
       } else {
-        // 发送请求时出了点问题
+        console.log('Error:', error);
         message.error('请求错误，请重试！').then();
         return;
       }
@@ -59,6 +60,7 @@ export const requestConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
+
       if (config.url === '/login' || config.url === '/register') {
         return { ...config };
       }
@@ -85,17 +87,19 @@ export const requestConfig: RequestConfig = {
                     localStorage.setItem('OPEN-API-TOKEN', res.data.token.accessToken);
                     localStorage.setItem('OPEN-API-REFRESH_TOKEN', res.data.token.refreshToken);
                     config.headers = { Authorization: `Bearer ${res.data.token.accessToken}` };
+                    return { ...config };
                   } else {
                     localStorage.removeItem('OPEN-API-TOKEN');
                     localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
                   }
                 })
                 .catch(() => {
+                  localStorage.removeItem('OPEN-API-TOKEN');
+                  localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
                   history.push('/user/login');
                 });
             } else {
               localStorage.removeItem('OPEN-API-TOKEN');
-              return { ...config };
             }
           }
         } else {
@@ -106,7 +110,8 @@ export const requestConfig: RequestConfig = {
         localStorage.removeItem('OPEN-API-TOKEN');
         localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
       }
-      return { ...config };
+
+      return Promise.reject();
     },
   ],
 

@@ -42,19 +42,16 @@ function verifyJumpLoginPage(token: string, refreshToken: string | null, loginTy
             } else {
               localStorage.removeItem('OPEN-API-TOKEN');
               localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
-              message.error('请重新登录！').then();
               history.push(loginPath);
             }
           })
           .catch(() => {
             localStorage.removeItem('OPEN-API-TOKEN');
             localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
-            message.error('请重新登录！').then();
             history.push(loginPath);
           });
       } else {
         localStorage.removeItem('OPEN-API-TOKEN');
-        message.error('请重新登录！').then();
         history.push(loginPath);
       }
     } else {
