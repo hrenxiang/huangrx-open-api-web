@@ -60,7 +60,6 @@ export const requestConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
-
       if (config.url === '/login' || config.url === '/register') {
         return { ...config };
       }
@@ -101,6 +100,9 @@ export const requestConfig: RequestConfig = {
             } else {
               localStorage.removeItem('OPEN-API-TOKEN');
             }
+          } else {
+            config.headers = { Authorization: `Bearer ${token}` };
+            return { ...config };
           }
         } else {
           localStorage.removeItem('OPEN-API-TOKEN');

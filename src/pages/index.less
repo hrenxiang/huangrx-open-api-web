@@ -1,12 +1,12 @@
 .index-container {
   min-height: 100vh;
-  background-color: white;
+  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 .index-header-container {
   display: flex;
   flex-direction: column;
-  padding: 0 15vw;
+  width: 100%;
 
   .index-header-content {
     display: flex;
@@ -21,11 +21,11 @@
     /* 模糊半径可以根据需要进行调整 */
     backdrop-filter: blur(10px);
     position: fixed;
-    width: 70vw;
-    padding: 15px 0 15px;
+    width: 100%;
+    padding: 15px 15vw 15px;
     cursor: default;
 
-    font-family: "ChillLongCangKaiShu_Regular", sans-serif;
+    font-family: 'ChillLongCangKaiShu_Regular', sans-serif;
 
     .index-header-logo {
       font-size: 18px;
@@ -62,7 +62,9 @@
         &:hover {
           background-color: black;
           color: white;
-          transition: background-color 1s, color .5s;
+          transition:
+            background-color 1s,
+            color 0.5s;
         }
       }
     }
@@ -78,15 +80,51 @@
     display: grid;
     grid-template-columns: 6fr 2fr;
     gap: 15px;
-    padding-top: 82px;
+    padding-top: 122px;
+    width: 70vw;
+    height: 30vh;
 
     .index-first-part__one {
-      min-width: 480px;
-      min-height: 260px;
+      width: 52.5vw;
+
+      .ant-carousel {
+        border-radius: 1.2rem;
+        overflow: hidden;
+
+        .slick-dots {
+          transform: translate(-42%);
+        }
+
+        li button {
+          height: 0.2rem;
+        }
+
+        .slick-dots-bottom {
+          bottom: 30px;
+        }
+      }
     }
 
     .index-first-part__two {
-      background-color: pink;
+      display: grid;
+      grid-auto-rows: 7fr 3fr;
+      row-gap: 2rem;
+
+      .index-first-two__one {
+        padding: 1rem 1rem 0;
+        background: #ffffff4d;
+        border: 1px solid #ffffff80;
+        box-shadow: 0 0.3rem 0.4625rem #00277b0f;
+        border-radius: 1.2rem;
+      }
+
+      .index-first-two__two {
+        padding: 1rem 1rem 0;
+        background: #ffffff4d;
+        border: 1px solid #ffffff80;
+        box-shadow: 0 0.3rem 0.4625rem #00277b0f;
+        border-radius: 1.2rem;
+      }
     }
   }
 }

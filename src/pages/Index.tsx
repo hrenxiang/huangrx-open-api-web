@@ -69,21 +69,21 @@ const Index: React.FC = () => {
             <Carousel autoplay>
               <div>
                 <img
-                  src={'https://picsum.photos/700/410?1'}
+                  src={'https://picsum.photos/1368/760?1'}
                   style={{ width: '100%', height: '100%' }}
                   alt={''}
                 />
               </div>
               <div>
                 <img
-                  src={'https://picsum.photos/700/410?2'}
+                  src={'https://picsum.photos/1368/760?2'}
                   style={{ width: '100%', height: '100%' }}
                   alt={''}
                 />
               </div>
               <div>
                 <img
-                  src={'https://picsum.photos/700/410?3'}
+                  src={'https://picsum.photos/1368/760?3'}
                   style={{ width: '100%', height: '100%' }}
                   alt={''}
                 />
