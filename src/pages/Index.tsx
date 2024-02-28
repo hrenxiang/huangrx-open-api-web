@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './index.less';
 import { Link } from '@umijs/max';
 import Draggable from '@/components/Dragging';
-import { Carousel } from 'antd';
+import {Carousel, Divider} from 'antd';
 import LazyImage from '@/components/LazyImage';
 
 import GongXuFang from '@/assets/image/svg/gongxufang.svg';
@@ -12,7 +12,9 @@ import GuaPaiChanPing from '@/assets/image/svg/guapaichanping.svg';
 import ShangJiaFuWu from '@/assets/image/svg/shangjiafuwu.svg';
 import FaBuXuQiu from '@/assets/image/svg/fanuxuqiu.svg';
 import CanJiaHuoDong from '@/assets/image/svg/canjiahuodong.svg';
-import {ProColumns, ProTable} from "@ant-design/pro-components";
+import XiBu from '@/assets/image/png/西部.png';
+import Reading from '@/assets/image/png/reading.png';
+import {DefaultFooter, ProColumns, ProTable} from '@ant-design/pro-components';
 
 const Index: React.FC = () => {
   const [mousePosition, setMousePosition] = useState<{
@@ -66,6 +68,9 @@ const Index: React.FC = () => {
       editable: false,
     },
   ];
+
+  const defaultMessage = '豫ICP备2022017977号';
+  const currentYear = new Date().getFullYear();
 
   return (
     <div
@@ -152,6 +157,99 @@ const Index: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="index-body-fourth">
+          <div className="index-body-item__header">
+            <span className="index-body-item__title">合作联盟</span>
+          </div>
+          <div className="index-body-fourth__content">
+            <div className="index-fourth-content__item">
+              <LazyImage url={XiBu} height="2rem" />
+            </div>
+            <div className="index-fourth-content__item">
+              <LazyImage url={XiBu} height="2rem" />
+            </div>
+            <div className="index-fourth-content__item">
+              <LazyImage url={XiBu} height="2rem" />
+            </div>
+            <div className="index-fourth-content__item">
+              <LazyImage url={XiBu} height="2rem" />
+            </div>
+            <div className="index-fourth-content__item">
+              <LazyImage url={XiBu} height="2rem" />
+            </div>
+            <div className="index-fourth-content__item">
+              <LazyImage url={XiBu} height="2rem" />
+            </div>
+            <div className="index-fourth-content__item">
+              <LazyImage url={XiBu} height="2rem" />
+            </div>
+            <div className="index-fourth-content__item">
+              <LazyImage url={XiBu} height="2rem" />
+            </div>
+            <div className="index-fourth-content__item">
+              <LazyImage url={XiBu} height="2rem" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="index-footer-container">
+        <Divider />
+        <div className="index-footer-container__first">
+          <div className="index-footer-first__one">
+            <span>API开放交易平台</span>
+            <span>邮箱：huang.rx.life@hotmail.com</span>
+            <span>地址：郑州中原数据产业大厦</span>
+            <div className="index-footer-first__qrcode">
+              <div className="index-footer-qrcode__item">
+                <LazyImage url={Reading} width="5rem" height="5rem" />
+                <span>订阅号 - 数交所</span>
+              </div>
+              <div className="index-footer-qrcode__item">
+                <LazyImage url={Reading} width="5rem" height="5rem" />
+                <span>服务号 - 数交所</span>
+              </div>
+            </div>
+          </div>
+          <div className="index-footer-first__two">
+            <div className="index-footer-first-two__item">
+              <span className="index-footer-first-two__title">关于我们</span>
+              <div className="index-footer-first-two__content">
+                <span>中心简介</span>
+                <span>新闻资讯</span>
+                <span>中心公告</span>
+                <span>招聘信息</span>
+              </div>
+            </div>
+
+            <div className="index-footer-first-two__item">
+              <span className="index-footer-first-two__title">其他平台</span>
+              <div className="index-footer-first-two__content">
+                <span>个人网站</span>
+                <span>个人简历</span>
+                <span>Chat</span>
+              </div>
+            </div>
+
+            <div className="index-footer-first-two__item">
+              <span className="index-footer-first-two__title">业务服务</span>
+              <div className="index-footer-first-two__content">
+                <span>API大厅</span>
+                <span>API登记</span>
+                <span>API交易</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="index-footer-container__second">
+          <DefaultFooter
+            style={{
+              background: 'none',
+            }}
+            copyright={`${currentYear} ${defaultMessage}`}
+          />
         </div>
       </div>
 
