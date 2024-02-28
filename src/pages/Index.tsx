@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './index.less';
 import { Link } from '@umijs/max';
 import Draggable from '@/components/Dragging';
-import {Carousel, Divider} from 'antd';
+import { Carousel, Divider } from 'antd';
 import LazyImage from '@/components/LazyImage';
 
 import GongXuFang from '@/assets/image/svg/gongxufang.svg';
@@ -14,7 +14,7 @@ import FaBuXuQiu from '@/assets/image/svg/fanuxuqiu.svg';
 import CanJiaHuoDong from '@/assets/image/svg/canjiahuodong.svg';
 import XiBu from '@/assets/image/png/西部.png';
 import Reading from '@/assets/image/png/reading.png';
-import {DefaultFooter, ProColumns, ProTable} from '@ant-design/pro-components';
+import { DefaultFooter, ProColumns, ProTable } from '@ant-design/pro-components';
 
 const Index: React.FC = () => {
   const [mousePosition, setMousePosition] = useState<{
@@ -280,7 +280,7 @@ const Index: React.FC = () => {
       </div>
 
       <div className="index-footer-container">
-        <Divider />
+        <Divider style={{ margin: '2rem 0' }} />
         <div className="index-footer-container__first">
           <div className="index-footer-first__one">
             <span>API开放交易平台</span>
