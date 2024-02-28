@@ -159,6 +159,90 @@ const Index: React.FC = () => {
           </div>
         </div>
 
+        <div className="index-body-trading">
+          <div className="index-body-item__header index-body-item__carry_more">
+            <span className="index-body-item__title">API交易</span>
+            <span className="index-body-item__more">{'查看更多 >'}</span>
+          </div>
+          <div className="index-body-trading__content"></div>
+        </div>
+
+        <div className="index-body-second">
+          <div className="index-body-second__item">
+            <div className="index-body-item__header">
+              <span className="index-body-item__title">热点新闻</span>
+            </div>
+            <div className="index-body-second__second-content">
+              <div className="index-body-second__second-item">
+                <span>1</span>
+                <span>汝之所欲，吾之所欲也汝之所欲，吾之所欲也</span>
+              </div>
+              <div className="index-body-second__second-item">
+                <span>2</span>
+                <span>汝之所欲，吾之所欲也汝之所欲，吾之所欲也</span>
+              </div>
+              <div className="index-body-second__second-item">
+                <span>3</span>
+                <span>汝之所欲，吾之所欲也汝之所欲，吾之所欲也</span>
+              </div>
+              <div className="index-body-second__second-item">
+                <span>4</span>
+                <span>汝之所欲，吾之所欲也汝之所欲，吾之所欲也</span>
+              </div>
+              <div className="index-body-second__second-item">
+                <span>5</span>
+                <span>汝之所欲，吾之所欲也汝之所欲，吾之所欲也</span>
+              </div>
+            </div>
+          </div>
+          <div className="index-body-second__item">
+            <div className="index-body-item__header index-body-item__carry_more">
+              <span className="index-body-item__title">行业资讯</span>
+              <span className="index-body-item__more">{'查看更多 >'}</span>
+            </div>
+            <div className="index-body-second__content">
+              <div>
+                <LazyImage url="https://picsum.photos/1920/1080?21" borderRadius="1.2rem" />
+              </div>
+              <div className="index-body-second-content__list">
+                <span>汝之所欲，吾之所欲也汝之所欲，吾之所欲也</span>
+                <span>汝之所欲，吾之所欲也 123123123</span>
+                <span>汝之所欲，吾之所欲也</span>
+                <span>汝之所欲，吾之所欲也</span>
+                <span>汝之所欲，吾之所欲也</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="index-body-three">
+          <div className="index-body-item__header index-body-item__carry_more">
+            <span className="index-body-item__title">网站活动</span>
+            <span className="index-body-item__more">{'查看更多 >'}</span>
+          </div>
+          <div className="index-body-three__content">
+            <div>
+              <LazyImage url="https://picsum.photos/1920/1080?11" borderRadius="1.2rem" />
+            </div>
+            <div className="index-body-three-content__two">
+              <div className="index-body-three-content-two__item">
+                <LazyImage url="https://picsum.photos/1920/1080?12" borderRadius="1.2rem" />
+              </div>
+              <div className="index-body-three-content-two__item">
+                <LazyImage url="https://picsum.photos/1920/1080?13" borderRadius="1.2rem" />
+              </div>
+            </div>
+            <div className="index-body-three-content__two">
+              <div className="index-body-three-content-two__item">
+                <LazyImage url="https://picsum.photos/1920/1080?14" borderRadius="1.2rem" />
+              </div>
+              <div className="index-body-three-content-two__item">
+                <LazyImage url="https://picsum.photos/1920/1080?15" borderRadius="1.2rem" />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="index-body-fourth">
           <div className="index-body-item__header">
             <span className="index-body-item__title">合作联盟</span>
@@ -213,33 +297,21 @@ const Index: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="index-footer-first__two">
-            <div className="index-footer-first-two__item">
-              <span className="index-footer-first-two__title">关于我们</span>
-              <div className="index-footer-first-two__content">
-                <span>中心简介</span>
-                <span>新闻资讯</span>
-                <span>中心公告</span>
-                <span>招聘信息</span>
-              </div>
+          <div className="index-footer-first-two__item">
+            <span className="index-footer-first-two__title">关于我们</span>
+            <div className="index-footer-first-two__content">
+              <span>中心简介</span>
+              <span>新闻资讯</span>
+              <span>中心公告</span>
+              <span>招聘信息</span>
             </div>
-
-            <div className="index-footer-first-two__item">
-              <span className="index-footer-first-two__title">其他平台</span>
-              <div className="index-footer-first-two__content">
-                <span>个人网站</span>
-                <span>个人简历</span>
-                <span>Chat</span>
-              </div>
-            </div>
-
-            <div className="index-footer-first-two__item">
-              <span className="index-footer-first-two__title">业务服务</span>
-              <div className="index-footer-first-two__content">
-                <span>API大厅</span>
-                <span>API登记</span>
-                <span>API交易</span>
-              </div>
+          </div>
+          <div className="index-footer-first-two__item">
+            <span className="index-footer-first-two__title">业务服务</span>
+            <div className="index-footer-first-two__content">
+              <span>API大厅</span>
+              <span>API登记</span>
+              <span>API交易</span>
             </div>
           </div>
         </div>
