@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px" height="30px" viewBox="0 0 30 30" version="1.1">
+  <title>guapaichanping</title>
+  <defs>
+    <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="linearGradient-1">
+      <stop stop-color="#F0F6FF" stop-opacity="0" offset="0%"></stop>
+      <stop stop-color="#DCE9FF" offset="100%"></stop>
+    </linearGradient>
+  </defs>
+  <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="0-3、首页-服务产品" transform="translate(-1589, -536)">
+      <g id="guapaichanping" transform="translate(1589, 536)">
+        <ellipse id="椭圆形备份" fill="url(#linearGradient-1)" cx="15" cy="25" rx="15" ry="5"></ellipse>
+        <g id="编组-6备份" transform="translate(2, 0)">
+          <rect id="矩形" x="0" y="0" width="26" height="26"></rect>
+          <path d="M4,0 L18.5,0 C20.4329966,-3.55085719e-16 22,1.56700338 22,3.5 C22,5.43299662 20.4329966,7 18.5,7 L8,7 C5.790861,7 4,5.209139 4,3 L4,0 L4,0 Z" id="矩形" fill="#AEEDE3"></path>
+          <path d="M25,19 C25,20.6568542 23.6568542,22 22,22 L19.521,22 L20.5490381,23.7810889 L17.9509619,25.2810889 L16.056,22 L8.943,22 L7.04903811,25.2810889 L4.45096189,23.7810889 L5.478,22 L3,22 C1.8954305,22 1,21.1045695 1,20 L1,6 C1,4.8954305 1.8954305,4 3,4 L23,4 C24.1045695,4 25,4.8954305 25,6 L25,19 Z" id="形状结合" fill="#61D3BA"></path>
+          <polygon id="路径-27" fill="#FFFFFF" fill-rule="nonzero" points="18.6264259 9 20 10.3901207 14.4568953 16 13.7701083 15.3049396 10.5718412 12.0689179 7.37357406 15.3049396 6 13.9148189 9.88505413 9.98296379 10.5718412 9.28790343 11.2586282 9.98296379 14.4568953 13.2189855"></polygon>
+          <g id="形状结合" transform="translate(1, 4)"></g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

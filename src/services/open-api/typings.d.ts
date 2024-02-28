@@ -351,4 +351,10 @@ declare namespace API {
     requestParam: RequestParam[];
     responseCodes: ResponseCodes[];
   };
+
+  type DevelopmentIndex = {
+    id?: string;
+    city?: string;
+    score?: string;
+  };
 }

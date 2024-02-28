@@ -4,6 +4,15 @@ import './index.less';
 import { Link } from '@umijs/max';
 import Draggable from '@/components/Dragging';
 import { Carousel } from 'antd';
+import LazyImage from '@/components/LazyImage';
+
+import GongXuFang from '@/assets/image/svg/gongxufang.svg';
+import FuWuShang from '@/assets/image/svg/fuwushaang.svg';
+import GuaPaiChanPing from '@/assets/image/svg/guapaichanping.svg';
+import ShangJiaFuWu from '@/assets/image/svg/shangjiafuwu.svg';
+import FaBuXuQiu from '@/assets/image/svg/fanuxuqiu.svg';
+import CanJiaHuoDong from '@/assets/image/svg/canjiahuodong.svg';
+import {ProColumns, ProTable} from "@ant-design/pro-components";
 
 const Index: React.FC = () => {
   const [mousePosition, setMousePosition] = useState<{
@@ -37,6 +46,27 @@ const Index: React.FC = () => {
     setMousePosition({ x: clientX, y: clientY, opacity: 1, scale: 1 });
   };
 
+  const developmentIndexColumns: ProColumns<API.DevelopmentIndex>[] = [
+    {
+      title: '序号',
+      dataIndex: 'id',
+      ellipsis: true,
+      editable: false,
+    },
+    {
+      title: '城市',
+      dataIndex: 'city',
+      ellipsis: true,
+      editable: false,
+    },
+    {
+      title: '指数',
+      dataIndex: 'score',
+      ellipsis: true,
+      editable: false,
+    },
+  ];
+
   return (
     <div
       className="index-container"
@@ -48,8 +78,7 @@ const Index: React.FC = () => {
       <div className="index-header-container">
         <div className="index-header-content">
           <a className="index-header-logo">
-            <div>Open Api</div>
-            <div>🌴 Huangrx</div>
+            <div>Open Api 🌴</div>
           </a>
           <div className="index-header-menu">
             <div className="index-header-menu__item">文档</div>
@@ -68,31 +97,60 @@ const Index: React.FC = () => {
           <div className="index-first-part__one">
             <Carousel autoplay>
               <div>
-                <img
-                  src={'https://picsum.photos/1368/760?1'}
-                  style={{ width: '100%', height: '100%' }}
-                  alt={''}
-                />
+                <LazyImage url="https://picsum.photos/1920/1080?1" borderRadius="1.2rem" />
               </div>
               <div>
-                <img
-                  src={'https://picsum.photos/1368/760?2'}
-                  style={{ width: '100%', height: '100%' }}
-                  alt={''}
-                />
+                <LazyImage url="https://picsum.photos/1920/1080?2" borderRadius="1.2rem" />
               </div>
               <div>
-                <img
-                  src={'https://picsum.photos/1368/760?3'}
-                  style={{ width: '100%', height: '100%' }}
-                  alt={''}
-                />
+                <LazyImage url="https://picsum.photos/1920/1080?3" borderRadius="1.2rem" />
               </div>
             </Carousel>
           </div>
           <div className="index-first-part__two">
-            <div className="index-first-two__one">123</div>
-            <div className="index-first-two__two">123</div>
+            <div className="index-first-two__one">
+              <span>数据要素市场发展指数</span>
+              <ProTable<API.DevelopmentIndex>
+                name="developmentIndex"
+                rowKey="key"
+                search={false}
+                options={false}
+                loading={false}
+                bordered={true}
+                pagination={false}
+                style={{
+                  width: '100%',
+                }}
+                cardBordered={false}
+                columns={developmentIndexColumns}
+              />
+            </div>
+            <div className="index-first-two__two">
+              <div className="index-first-two__item">
+                <img src={GongXuFang} alt="" />
+                <span>成为供需方</span>
+              </div>
+              <div className="index-first-two__item">
+                <img src={FuWuShang} alt="" />
+                <span>成为服务商</span>
+              </div>
+              <div className="index-first-two__item">
+                <img src={GuaPaiChanPing} alt="" />
+                <span>我要挂牌产品</span>
+              </div>
+              <div className="index-first-two__item">
+                <img src={ShangJiaFuWu} alt="" />
+                <span>我要上架服务</span>
+              </div>
+              <div className="index-first-two__item">
+                <img src={FaBuXuQiu} alt="" />
+                <span>我要发布需求</span>
+              </div>
+              <div className="index-first-two__item">
+                <img src={CanJiaHuoDong} alt="" />
+                <span>我要参加活动</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px" height="30px" viewBox="0 0 30 30" version="1.1">
+  <title>shangjiafuwu</title>
+  <defs>
+    <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="linearGradient-1">
+      <stop stop-color="#F0F6FF" stop-opacity="0" offset="0%"></stop>
+      <stop stop-color="#DCE9FF" offset="100%"></stop>
+    </linearGradient>
+  </defs>
+  <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="0-3、首页-服务产品" transform="translate(-1341, -602)">
+      <g id="shangjiafuwu" transform="translate(1341, 602)">
+        <ellipse id="椭圆形备份" fill="url(#linearGradient-1)" cx="15" cy="25" rx="15" ry="5"></ellipse>
+        <g id="编组-6备份" transform="translate(2, 0)">
+          <rect id="矩形" x="0" y="0" width="26" height="26"></rect>
+          <path d="M7.31879232,2 L18.6812077,2 C19.4812639,2 20.2043402,2.47679371 20.5194977,3.2121614 L23,9 L23,9 L3,9 L5.48050226,3.2121614 C5.79565984,2.47679371 6.5187361,2 7.31879232,2 Z" id="矩形" fill="#FADF89"></path>
+          <path d="M2,6 L24,6 C25.1045695,6 26,6.8954305 26,8 L26,18 C26,21.3137085 23.3137085,24 20,24 L2,24 C0.8954305,24 1.3527075e-16,23.1045695 0,22 L0,8 C-1.3527075e-16,6.8954305 0.8954305,6 2,6 Z" id="矩形" fill="#F5BF41"></path>
+          <path d="M13,9.58578644 L17.7071068,14.2928932 L16.2928932,15.7071068 L13.9998932,13.4147864 L14,20 L12,20 L11.9998932,13.4147864 L9.70710678,15.7071068 L8.29289322,14.2928932 L13,9.58578644 Z" id="形状结合" fill="#FFFFFF" fill-rule="nonzero"></path>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

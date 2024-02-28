@@ -22,13 +22,13 @@
     backdrop-filter: blur(10px);
     position: fixed;
     width: 100%;
-    padding: 15px 15vw 15px;
+    padding: 15px 12vw 15px;
     cursor: default;
 
     font-family: 'ChillLongCangKaiShu_Regular', sans-serif;
 
     .index-header-logo {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       cursor: pointer;
     }
@@ -46,7 +46,7 @@
       }
 
       .index-header-menu__item {
-        font-size: 15px;
+        font-size: 14px;
         cursor: pointer;
 
         &:hover {
@@ -57,7 +57,7 @@
       .index-header-menu__login {
         border: 1.5px solid black;
         border-radius: 18px;
-        padding: 12px 18px;
+        padding: 8px 16px;
 
         &:hover {
           background-color: black;
@@ -74,25 +74,26 @@
 .index-body-container {
   display: flex;
   flex-direction: column;
-  padding: 0 15vw;
+  padding: 0 12vw;
 
   .index-body-first {
     display: grid;
     grid-template-columns: 6fr 2fr;
     gap: 15px;
-    padding-top: 122px;
-    width: 70vw;
+    padding-top: 88px;
+    width: 76vw;
     height: 30vh;
 
     .index-first-part__one {
-      width: 52.5vw;
+      width: 55.5vw;
+      height: 31.2vw;
+      border-radius: 1.2rem;
+      overflow: hidden;
 
       .ant-carousel {
-        border-radius: 1.2rem;
-        overflow: hidden;
 
         .slick-dots {
-          transform: translate(-42%);
+          transform: translate(-40%);
         }
 
         li button {
@@ -108,22 +109,70 @@
     .index-first-part__two {
       display: grid;
       grid-auto-rows: 7fr 3fr;
-      row-gap: 2rem;
+      row-gap: 1rem;
 
       .index-first-two__one {
-        padding: 1rem 1rem 0;
+        padding: 1rem 0.5rem 0.3rem;
         background: #ffffff4d;
         border: 1px solid #ffffff80;
         box-shadow: 0 0.3rem 0.4625rem #00277b0f;
         border-radius: 1.2rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+
+        font-size: 0.8rem;
+
+        .ant-table {
+          background-color: transparent;
+
+          .ant-table-cell {
+            background-color: transparent;
+            font-size: 0.6rem;
+            text-align: center;
+          }
+
+          .ant-table-placeholder {
+            background-color: transparent;
+          }
+
+          tr>th,
+          tr>td {
+            padding: 0.3rem 0.2rem;
+          }
+        }
       }
 
       .index-first-two__two {
-        padding: 1rem 1rem 0;
+        padding: 0.5rem 0.5rem;
         background: #ffffff4d;
         border: 1px solid #ffffff80;
         box-shadow: 0 0.3rem 0.4625rem #00277b0f;
         border-radius: 1.2rem;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        row-gap: 0.2rem;
+        column-gap: 1rem;
+
+        font-size: 0.5rem;
+
+        .index-first-two__item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 0.2rem;
+
+          img {
+            width: 1rem;
+            height: 1rem;
+          }
+        }
       }
     }
   }

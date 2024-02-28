@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px" height="30px" viewBox="0 0 30 30" version="1.1">
+  <title>fuwushaang</title>
+  <defs>
+    <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="linearGradient-1">
+      <stop stop-color="#F0F6FF" stop-opacity="0" offset="0%"></stop>
+      <stop stop-color="#DCE9FF" offset="100%"></stop>
+    </linearGradient>
+  </defs>
+  <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="0-3、首页-服务产品" transform="translate(-1465, -536)">
+      <g id="fuwushaang" transform="translate(1465, 536)">
+        <ellipse id="椭圆形备份" fill="url(#linearGradient-1)" cx="15" cy="25" rx="15" ry="5"></ellipse>
+        <g id="编组-6备份" transform="translate(2, 0)">
+          <rect id="矩形" x="0" y="0" width="26" height="26"></rect>
+          <path d="M13,0 C16.8659932,0 20,3.13400675 20,7 C20,10.8659932 16.8659932,14 13,14 C9.13400675,14 6,10.8659932 6,7 C6,3.13400675 9.13400675,0 13,0 Z M13,3 C10.790861,3 9,4.790861 9,7 C9,9.209139 10.790861,11 13,11 C15.209139,11 17,9.209139 17,7 C17,4.790861 15.209139,3 13,3 Z" id="形状结合" fill="#B699F3"></path>
+          <path d="M5.72237484,6 L20.2776252,6 C21.267618,6 22.1086419,6.72427918 22.2554979,7.70331909 L24.3109957,21.4066382 C24.6387004,23.5913361 23.13331,25.6280407 20.9486121,25.9557454 C20.7521978,25.9852076 20.553862,26 20.3552503,26 L3.32237484,26 C2.21780534,26 1.32237484,25.1045695 1.32237484,24 C1.32237484,23.9006942 1.32977106,23.8015262 1.34450214,23.7033191 L3.74450214,7.70331909 C3.89135812,6.72427918 4.732382,6 5.72237484,6 Z" id="矩形" fill="#7077E5"></path>
+          <rect id="矩形" fill="#FFFFFF" x="8" y="19" width="10" height="2"></rect>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

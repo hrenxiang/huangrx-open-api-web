@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px" height="30px" viewBox="0 0 30 30" version="1.1">
+  <title>gongxufang</title>
+  <defs>
+    <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="linearGradient-1">
+      <stop stop-color="#F0F6FF" stop-opacity="0" offset="0%"></stop>
+      <stop stop-color="#DCE9FF" offset="100%"></stop>
+    </linearGradient>
+  </defs>
+  <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="0-3、首页-服务产品" transform="translate(-1341, -536)">
+      <g id="gongxufang" transform="translate(1341, 536)">
+        <ellipse id="椭圆形" fill="url(#linearGradient-1)" cx="15" cy="25" rx="15" ry="5"></ellipse>
+        <g id="编组-6" transform="translate(2, 0)">
+          <rect id="矩形" x="0" y="0" width="26" height="26"></rect>
+          <path d="M6,0 L13,0 C16.8659932,-7.10171439e-16 20,3.13400675 20,7 L20,9 C20,12.8659932 16.8659932,16 13,16 C9.13400675,16 6,12.8659932 6,9 L6,0 L6,0 Z" id="矩形" fill="#97C5FA"></path>
+          <path d="M0.951805149,16.4142738 L8.28312317,11.9026934 C11.175786,10.1225932 14.824214,10.1225932 17.7168768,11.9026934 L25.0481949,16.4142738 C25.6396898,16.7782706 26,17.423069 26,18.1175904 L26,21.5 C26,23.9852814 23.9852814,26 21.5,26 L2,26 C0.8954305,26 1.3527075e-16,25.1045695 0,24 L0,18.1175904 C5.31804597e-16,17.423069 0.360310202,16.7782706 0.951805149,16.4142738 Z" id="矩形" fill="#436FF6"></path>
+          <polygon id="路径-26" fill="#FFFFFF" fill-rule="nonzero" points="16.2317787 15.3598156 17.7682213 16.6401844 12.7682213 22.6401844 12.0671984 23.4814119 11.2928932 22.7071068 8.29289322 19.7071068 9.70710678 18.2928932 11.932 20.517"></polygon>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
