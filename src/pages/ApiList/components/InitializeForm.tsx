@@ -708,7 +708,7 @@ const InitializeForm: React.FC = () => {
     let authRequired = firstStepData?.authRequired;
     let responseCodes = firstStepData?.responseCodes;
 
-    if (method && url && authRequired) {
+    if (method && url && (authRequired || authRequired === 0)) {
       const apiTestRequest: API.ApiTestRequest = {
         method: method,
         url: url,
