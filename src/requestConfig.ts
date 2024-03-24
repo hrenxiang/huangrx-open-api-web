@@ -13,6 +13,13 @@ interface ResponseStructure {
   success?: boolean;
 }
 
+// 定义匹配规则的数组
+const whiteList = [
+  '/login',
+  '/register',
+  '/index/images/**'
+];
+
 /**
  * pro 自带的错误处理， 可以在这里做自己的改动
  * @doc https://umijs.org/docs/max/request#配置
@@ -36,8 +43,8 @@ export const requestConfig: RequestConfig = {
     errorHandler: (error: any, opts: any) => {
       if (opts?.skipErrorHandler) throw error;
       // 我们的 errorThrower 抛出的错误。
-      console.log('Error name:', error.name);
-      if (error.name === 'BizError') {
+      console.log('Error name:', error?.name);
+      if (error?.name === 'BizError') {
         const errorInfo = error.info;
         console.log('Error info:', errorInfo);
         if (errorInfo) {
@@ -45,7 +52,7 @@ export const requestConfig: RequestConfig = {
           message.error(errorInfo.message).then();
           return;
         }
-      } else if (error.request) {
+      } else if (error?.request) {
         console.log('Error request:', error.request);
         message.error('请求错误，请重试！').then();
         return;
@@ -60,7 +67,19 @@ export const requestConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
-      if (config.url === '/login' || config.url === '/register') {
+
+      // 检查配置的 URL 是否匹配任何一个规则
+      const isMatched = whiteList.some(pattern => {
+        // 对于以 /index/images/ 开头的特殊情况进行处理
+        if (pattern.endsWith('**')) {
+          const prefix = pattern.slice(0, -2);
+          return config.url?.startsWith(prefix);
+        } else {
+          return config.url === pattern;
+        }
+      });
+
+      if (isMatched) {
         return { ...config };
       }
 

@@ -55,6 +55,29 @@ export default [
     ],
   },
   {
+    icon: 'crown',
+    path: '/partner',
+    name: '友情链接',
+    hideChildrenInMenu: true,
+    routes: [
+      {
+        path: '/partner',
+        name: '友情链接管理页',
+        component: './Partner',
+      },
+      {
+        path: '/partner/initialize',
+        name: '新建',
+        component: './Partner/components/InitializeForm',
+      },
+      {
+        path: '/partner/detail',
+        name: '详情',
+        component: './Partner/components/Detail',
+      }
+    ],
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

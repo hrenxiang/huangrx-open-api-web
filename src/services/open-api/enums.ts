@@ -7,10 +7,10 @@ import {ProSchemaValueEnumObj} from "@ant-design/pro-components";
  */
 export function mapToArray<T>(
   map: Map<string, [T, string, string]>,
-): { value: T; label: string }[] {
-  const result: { value: T; label: string }[] = [];
+): { value: T; label: string; status: any }[] {
+  const result: { value: T; label: string; status: any }[] = [];
   map.forEach((value) => {
-    result.push({ value: value[0], label: value[1] });
+    result.push({ value: value[0], label: value[1], status: value[2] });
   });
   return result;
 }
@@ -62,7 +62,7 @@ export function generateValueEnum<T> (enumObject: Map<string, [T, string, string
   const array = mapToArray<T>(enumObject);
   const valueEnumObj: ProSchemaValueEnumObj = {};
   array.forEach((item) => {
-    valueEnumObj[String(item.value)] = { text: item.label };
+    valueEnumObj[String(item.value)] = { text: item.label, status: item.status };
   });
   return valueEnumObj;
 };
@@ -71,8 +71,16 @@ export function generateValueEnum<T> (enumObject: Map<string, [T, string, string
  * API 状态枚举
  */
 export const ApiStatusEnum = new Map<string, [number, string, string]>([
-  ['ENABLE', [1, '已生效', 'extra']],
-  ['DISABLE', [0, '未生效', 'extra']],
+  ['ENABLE', [1, '已生效', 'Processing']],
+  ['DISABLE', [0, '未生效', 'Default']],
+]);
+
+/**
+ * API 状态枚举
+ */
+export const CommonImageTypeEnum = new Map<string, [number, string, string]>([
+  ['BANNER', [1, 'Banner图', 'Banner图']],
+  ['PARTNER', [0, '合作伙伴', '合作伙伴']],
 ]);
 
 /**

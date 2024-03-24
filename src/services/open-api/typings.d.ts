@@ -357,4 +357,111 @@ declare namespace API {
     city?: string;
     score?: string;
   };
+
+  /**
+   * CommonImageInfoPageDTO
+   */
+  type CommonImageRequest = {
+    beginTime?: null | string;
+    endTime?: null | string;
+    location?: null | string;
+    orderColumn?: null | string;
+    orderDirection?: null | string;
+    pageNum?: number | null;
+    pageSize?: number | null;
+    partnerName?: null | string;
+    status?: number | null;
+    timeRangeColumn?: null | string;
+    type?: number | null;
+    [property: string]: any;
+  };
+
+  type CommonImagePageResponse = {
+    code?: string;
+    message?: string;
+    data?: CommonImagePage;
+  };
+
+  /**
+   * 响应数据
+   *
+   * CommonImagePage«ApiCommonImageVO»
+   */
+  type CommonImagePage = {
+    /**
+     * 列表数据
+     */
+    rows?: CommonImageVO[];
+    /**
+     * 总记录数
+     */
+    total?: number;
+    [property: string]: any;
+  };
+
+  /**
+   * 公共图片响应对象
+   *
+   * ApiCommonImageVO
+   */
+  type CommonImageVO = {
+    /**
+     * 创建时间
+     */
+    createTime?: null | string;
+    /**
+     * 创建者
+     */
+    creatorName?: null | string;
+    /**
+     * 主键
+     */
+    id?: null | number;
+    /**
+     * 图片地址
+     */
+    imgPath?: null | string;
+    /**
+     * banner位置
+     */
+    location?: null | string;
+    /**
+     * 合作伙伴企业名称
+     */
+    partnerName?: null | string;
+    /**
+     * 状态 0-初始状态
+     */
+    status?: number | null;
+    /**
+     * 数据类型，0-合作伙伴，1-banner
+     */
+    type?: number | null;
+    /**
+     * 修改者
+     */
+    updaterName?: null | string;
+    /**
+     * 修改时间
+     */
+    updateTime?: null | string;
+    /**
+     * 权重
+     */
+    weight?: number | null;
+    [property: string]: any;
+  };
+
+  type EditStatusRequest = {
+    /**
+     * 唯一标识符
+     */
+    ids: number[];
+    /**
+     * 信息状态
+     */
+    status: number;
+    [property: string]: any;
+  }
+
 }

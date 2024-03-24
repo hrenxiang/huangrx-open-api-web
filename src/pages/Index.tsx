@@ -1,10 +1,11 @@
 import '@umijs/max';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './index.less';
 import { Link } from '@umijs/max';
 import Draggable from '@/components/Dragging';
 import { Carousel, Divider } from 'antd';
 import LazyImage from '@/components/LazyImage';
+import { list as listByPage } from '@/services/open-api/CommonImageController';
 
 import GongXuFang from '@/assets/image/svg/gongxufang.svg';
 import FuWuShang from '@/assets/image/svg/fuwushaang.svg';
@@ -70,7 +71,34 @@ const Index: React.FC = () => {
   ];
 
   const defaultMessage = '豫ICP备2022017977号';
+
   const currentYear = new Date().getFullYear();
+
+  // 获取合作伙伴以及Banner图信息
+  const [partnerList, setPartnerList] = useState<any>();
+
+  const [bannerList, setBannerList] = useState<any>();
+
+  useEffect(() => {
+    let partnerRequest: API.CommonImageRequest = {
+      pageNum: 1,
+      pageSize: 10,
+      status: 1,
+      type: 0,
+    };
+    let bannerRequest: API.CommonImageRequest = {
+      pageNum: 1,
+      pageSize: 10,
+      status: 1,
+      type: 1,
+    };
+    listByPage(partnerRequest).then((res) => {
+      setPartnerList(res.data?.rows);
+    });
+    listByPage(bannerRequest).then((res) => {
+      setBannerList(res.data?.rows);
+    });
+  }, []);
 
   return (
     <div
@@ -101,15 +129,11 @@ const Index: React.FC = () => {
         <div className="index-body-first">
           <div className="index-first-part__one">
             <Carousel autoplay>
-              <div>
-                <LazyImage url="https://picsum.photos/1920/1080?1" borderRadius="1.2rem" />
-              </div>
-              <div>
-                <LazyImage url="https://picsum.photos/1920/1080?2" borderRadius="1.2rem" />
-              </div>
-              <div>
-                <LazyImage url="https://picsum.photos/1920/1080?3" borderRadius="1.2rem" />
-              </div>
+              {bannerList?.map((banner: API.CommonImageVO, id: number) => (
+                <div key={id}>
+                  {banner.imgPath && <LazyImage url={banner.imgPath} borderRadius="1.2rem" />}
+                </div>
+              ))}
             </Carousel>
           </div>
           <div className="index-first-part__two">
@@ -248,33 +272,11 @@ const Index: React.FC = () => {
             <span className="index-body-item__title">合作联盟</span>
           </div>
           <div className="index-body-fourth__content">
-            <div className="index-fourth-content__item">
-              <LazyImage url={XiBu} height="2rem" />
-            </div>
-            <div className="index-fourth-content__item">
-              <LazyImage url={XiBu} height="2rem" />
-            </div>
-            <div className="index-fourth-content__item">
-              <LazyImage url={XiBu} height="2rem" />
-            </div>
-            <div className="index-fourth-content__item">
-              <LazyImage url={XiBu} height="2rem" />
-            </div>
-            <div className="index-fourth-content__item">
-              <LazyImage url={XiBu} height="2rem" />
-            </div>
-            <div className="index-fourth-content__item">
-              <LazyImage url={XiBu} height="2rem" />
-            </div>
-            <div className="index-fourth-content__item">
-              <LazyImage url={XiBu} height="2rem" />
-            </div>
-            <div className="index-fourth-content__item">
-              <LazyImage url={XiBu} height="2rem" />
-            </div>
-            <div className="index-fourth-content__item">
-              <LazyImage url={XiBu} height="2rem" />
-            </div>
+            {partnerList?.map((partner: API.CommonImageVO, id: number) => (
+              <div key={id} className="index-fourth-content__item">
+                {partner.imgPath && <LazyImage url={partner.imgPath} height="100%" width="100%" />}
+              </div>
+            ))}
           </div>
         </div>
       </div>
