@@ -5,7 +5,22 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { login } from '@/services/open-api/LoginController';
 import { history } from '@@/core/history';
 
-// 与后端约定的响应数据格式
+/**
+ * 与后端约定的响应数据格式。
+ * @interface
+ * @name ResponseStructure
+ * @property {*} [data] - 响应数据。
+ * @property {number} [code] - 响应状态码。
+ * @property {string} [message] - 响应消息。
+ * @property {boolean} [success] - 响应是否成功。
+ * @example
+ * const response: ResponseStructure = {
+ *   data: { id: 1, name: 'John' },
+ *   code: 200,
+ *   message: 'Success',
+ *   success: true
+ * };
+ */
 interface ResponseStructure {
   data?: any;
   code?: number;
@@ -13,12 +28,25 @@ interface ResponseStructure {
   success?: boolean;
 }
 
-// 定义匹配规则的数组
-const whiteList = [
-  '/login',
-  '/register',
-  '/index/images/**'
-];
+/**
+ * 请求白名单，包含允许无需认证即可访问的路由。
+ * @constant {string[]}
+ * @name whiteList
+ */
+const whiteList = ['/login', '/register', '/index/images/**'];
+
+/**
+ * 从本地存储中移除登录状态相关信息。
+ * @function
+ * @name removeLoginStatus
+ * @returns {void}
+ * @example
+ * removeLoginStatus();
+ */
+const removeLoginStatus = () => {
+  localStorage.removeItem('OPEN-API-TOKEN');
+  localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
+};
 
 /**
  * pro 自带的错误处理， 可以在这里做自己的改动
@@ -67,9 +95,8 @@ export const requestConfig: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config: RequestOptions) => {
-
       // 检查配置的 URL 是否匹配任何一个规则
-      const isMatched = whiteList.some(pattern => {
+      const isMatched = whiteList.some((pattern) => {
         // 对于以 /index/images/ 开头的特殊情况进行处理
         if (pattern.endsWith('**')) {
           const prefix = pattern.slice(0, -2);
@@ -107,13 +134,11 @@ export const requestConfig: RequestConfig = {
                     config.headers = { Authorization: `Bearer ${res.data.token.accessToken}` };
                     return { ...config };
                   } else {
-                    localStorage.removeItem('OPEN-API-TOKEN');
-                    localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
+                    removeLoginStatus();
                   }
                 })
                 .catch(() => {
-                  localStorage.removeItem('OPEN-API-TOKEN');
-                  localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
+                  removeLoginStatus();
                   history.push('/user/login');
                 });
             } else {
@@ -124,12 +149,10 @@ export const requestConfig: RequestConfig = {
             return { ...config };
           }
         } else {
-          localStorage.removeItem('OPEN-API-TOKEN');
-          localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
+          removeLoginStatus();
         }
       } else {
-        localStorage.removeItem('OPEN-API-TOKEN');
-        localStorage.removeItem('OPEN-API-REFRESH_TOKEN');
+        removeLoginStatus();
       }
 
       return Promise.reject();
